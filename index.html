@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,41 +25,41 @@
         }
     </script>
 </head>
-<body class="bg-editorial text-charcoal font-sans antialiased flex flex-col min-h-screen">
+<body class="bg-editorial text-charcoal font-sans antialiased">
 
     <!-- Top Sticky Navigation Bar -->
     <header class="sticky top-0 z-40 bg-editorial/95 backdrop-blur-md border-b border-stone-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="h-16 sm:h-20 flex items-center justify-between">
-                <a href="#home" class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2">
                     <div class="w-8 h-8 rounded bg-charcoal text-editorial flex items-center justify-center font-serif font-bold text-lg">B</div>
                     <span class="font-serif font-bold text-xl tracking-tight text-charcoal">BD<span class="text-gold">Platform</span></span>
                 </a>
 
                 <!-- Desktop Menu -->
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
-                    <a href="#home" class="text-charcoal font-semibold">Home</a>
-                    <a href="#career" class="hover:text-charcoal transition">Career</a>
-                    <a href="#application" class="hover:text-charcoal transition">Application</a>
-                    <a href="#contact" class="hover:text-charcoal transition">Contact</a>
+                    <a href="index.html" class="hover:text-charcoal transition">Home</a>
+                    <a href="index.html#career" class="hover:text-charcoal transition">Career</a>
+                    <a href="application.html" class="hover:text-charcoal transition">Application</a>
+                    <a href="contact.html" class="hover:text-charcoal transition">Contact</a>
                 </nav>
 
-                <button onclick="openLoginModal()" class="px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-charcoal text-editorial rounded-lg hover:bg-stone-800 transition">
+                <a href="login.html" class="px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-charcoal text-editorial rounded-lg hover:bg-stone-800 transition">
                     Login
-                </button>
+                </a>
             </div>
 
             <!-- Mobile Sub-bar Menu -->
             <nav class="flex md:hidden items-center justify-around py-2.5 border-t border-stone-200/70 text-xs font-medium text-stone-700">
-                <a href="#home" class="text-gold font-semibold">Home</a>
-                <a href="#career" class="hover:text-gold transition">Career</a>
-                <a href="#application" class="hover:text-gold transition">Application</a>
-                <a href="#contact" class="hover:text-gold transition">Contact</a>
+                <a href="index.html" class="hover:text-gold transition">Home</a>
+                <a href="index.html#career" class="hover:text-gold transition">Career</a>
+                <a href="application.html" class="hover:text-gold transition">Application</a>
+                <a href="contact.html" class="hover:text-gold transition">Contact</a>
             </nav>
         </div>
     </header>
         <!-- Hero Section -->
-    <main class="flex-grow">
+    <main>
         <section id="home" class="pt-14 pb-20 sm:pt-24 sm:pb-28 px-4 sm:px-6 border-b border-stone-200">
             <div class="max-w-5xl mx-auto text-center">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-medium text-stone-600 mb-6 shadow-sm">
@@ -80,7 +80,7 @@
                     <a href="#career" class="px-7 py-3.5 text-sm font-medium bg-charcoal text-editorial rounded-lg hover:bg-stone-800 transition shadow-sm">
                         Explore Career Opportunities
                     </a>
-                    <a href="#application" class="px-7 py-3.5 text-sm font-medium bg-white text-charcoal border border-stone-300 rounded-lg hover:bg-stone-50 transition">
+                    <a href="application.html" class="px-7 py-3.5 text-sm font-medium bg-white text-charcoal border border-stone-300 rounded-lg hover:bg-stone-50 transition">
                         Track Your Application
                     </a>
                 </div>
@@ -103,7 +103,7 @@
             </div>
         </section>
 
-        <!-- Career & Divisions Section (All 6 Cards Visible) -->
+        <!-- Career Opportunities Section -->
         <section id="career" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
             <div class="text-center max-w-2xl mx-auto mb-14">
                 <span class="text-xs font-semibold uppercase tracking-widest text-gold">Career Opportunities</span>
@@ -121,9 +121,9 @@
                         <h3 class="font-serif text-xl font-bold text-charcoal mb-2">Story Writing</h3>
                         <p class="text-sm text-stone-600 mb-6 leading-relaxed">Create engaging stories and creative content for our international clients and global platforms.</p>
                     </div>
-                    <button onclick="openApplyModal('Story Writing')" class="w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                    <a href="apply.html?role=Story-Writing" class="block w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition text-center">
                         Apply Now
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 2. Story Management -->
@@ -135,9 +135,9 @@
                         <h3 class="font-serif text-xl font-bold text-charcoal mb-2">Story Management</h3>
                         <p class="text-sm text-stone-600 mb-6 leading-relaxed">Manage, organize and maintain stories and written content following global editorial standards.</p>
                     </div>
-                    <button onclick="openApplyModal('Story Management')" class="w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                    <a href="apply.html?role=Story-Management" class="block w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition text-center">
                         Apply Now
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 3. Website Handling -->
@@ -149,9 +149,9 @@
                         <h3 class="font-serif text-xl font-bold text-charcoal mb-2">Website Handling</h3>
                         <p class="text-sm text-stone-600 mb-6 leading-relaxed">Help manage website content, pages and daily digital operations with precision.</p>
                     </div>
-                    <button onclick="openApplyModal('Website Handling')" class="w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                    <a href="apply.html?role=Website-Handling" class="block w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition text-center">
                         Apply Now
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 4. Content Management -->
@@ -163,9 +163,9 @@
                         <h3 class="font-serif text-xl font-bold text-charcoal mb-2">Content Management</h3>
                         <p class="text-sm text-stone-600 mb-6 leading-relaxed">Manage digital content assets and keep enterprise information properly structured and organized.</p>
                     </div>
-                    <button onclick="openApplyModal('Content Management')" class="w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                    <a href="apply.html?role=Content-Management" class="block w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition text-center">
                         Apply Now
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 5. Social Media Management -->
@@ -177,9 +177,9 @@
                         <h3 class="font-serif text-xl font-bold text-charcoal mb-2">Social Media Management</h3>
                         <p class="text-sm text-stone-600 mb-6 leading-relaxed">Manage social media content, scheduled posts and global audience engagement strategies.</p>
                     </div>
-                    <button onclick="openApplyModal('Social Media Management')" class="w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                    <a href="apply.html?role=Social-Media-Management" class="block w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition text-center">
                         Apply Now
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 6. Data Management -->
@@ -191,68 +191,10 @@
                         <h3 class="font-serif text-xl font-bold text-charcoal mb-2">Data Management</h3>
                         <p class="text-sm text-stone-600 mb-6 leading-relaxed">Maintain, verify and organize important platform records and operational databases.</p>
                     </div>
-                    <button onclick="openApplyModal('Data Management')" class="w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
+                    <a href="apply.html?role=Data-Management" class="block w-full py-2.5 px-4 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition text-center">
                         Apply Now
-                    </button>
+                    </a>
                 </div>
-            </div>
-        </section>
-                <!-- Application Tracking Section -->
-        <section id="application" class="py-16 px-4 sm:px-6 bg-white border-y border-stone-200">
-            <div class="max-w-3xl mx-auto text-center">
-                <span class="text-xs font-semibold uppercase tracking-widest text-gold">Application Status</span>
-                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal mt-2 mb-3">Track Your Application</h2>
-                <p class="text-sm text-stone-600 mb-8">আবেদন করার পর প্রাপ্ত Tracking ID দিয়ে আপনার আবেদনের বর্তমান অবস্থা চেক করুন।</p>
-                
-                <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                    <input type="text" id="trackInput" placeholder="e.g. BDP-2026-4819" class="flex-1 px-4 py-3 text-sm bg-editorial border border-stone-300 rounded-lg focus:outline-none focus:border-charcoal">
-                    <button onclick="checkStatus()" class="px-6 py-3 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
-                        Check Status
-                    </button>
-                </div>
-                <div id="trackResult" class="mt-4 text-sm font-medium hidden"></div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <span class="text-xs font-semibold uppercase tracking-widest text-gold">Contact Us</span>
-                    <h2 class="font-serif text-3xl font-bold text-charcoal mt-2 mb-4">Get in Touch With Our Team</h2>
-                    <p class="text-sm text-stone-600 mb-6 leading-relaxed">
-                        কাজ বা আবেদন সংক্রান্ত যেকোনো তথ্যের জন্য আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন। আমরা দ্রুত উত্তর দেওয়ার চেষ্টা করি।
-                    </p>
-                    <div class="space-y-3 text-sm text-stone-700">
-                        <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-envelope text-gold w-5"></i>
-                            <span>support@bdplatform.page.gd</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-location-dot text-gold w-5"></i>
-                            <span>Dhaka, Bangladesh (Global Operations)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <form onsubmit="submitContact(event)" class="bg-white p-6 sm:p-8 rounded-xl border border-stone-200 shadow-sm space-y-4">
-                    <div>
-                        <label class="block text-xs font-medium text-stone-700 mb-1">Your Name</label>
-                        <input type="text" required placeholder="Enter your full name" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-stone-700 mb-1">Email Address</label>
-                        <input type="email" required placeholder="you@example.com" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-stone-700 mb-1">Message</label>
-                        <textarea rows="3" required placeholder="How can we help you?" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal"></textarea>
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
-                        Send Message
-                    </button>
-                    <p id="contactSuccess" class="text-xs text-emerald-600 font-medium text-center hidden">ধন্যবাদ! আপনার বার্তা সফলভাবে পাঠানো হয়েছে।</p>
-                </form>
             </div>
         </section>
     </main>
@@ -266,123 +208,5 @@
         </div>
     </footer>
 
-    <!-- Apply Modal -->
-    <div id="applyModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
-            <button onclick="closeApplyModal()" class="absolute top-4 right-4 text-stone-400 hover:text-charcoal">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <span class="text-xs font-semibold uppercase tracking-wider text-gold">Career Application</span>
-            <h3 id="modalRoleTitle" class="font-serif text-2xl font-bold text-charcoal mt-1 mb-4">Apply Now</h3>
-            
-            <form id="applyForm" onsubmit="handleApply(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-stone-700 mb-1">Full Name</label>
-                    <input type="text" required placeholder="Your Name" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-700 mb-1">Email Address</label>
-                    <input type="email" required placeholder="email@example.com" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-700 mb-1">Phone / WhatsApp Number</label>
-                    <input type="tel" required placeholder="+880 1XXX-XXXXXX" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-700 mb-1">Portfolio / Experience Note</label>
-                    <textarea rows="2" placeholder="Briefly describe your experience..." class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal"></textarea>
-                </div>
-                <button type="submit" class="w-full py-3 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
-                    Submit Application
-                </button>
-            </form>
-
-            <div id="applySuccess" class="hidden text-center py-6">
-                <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3 text-xl">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <h4 class="font-serif text-xl font-bold text-charcoal mb-1">Application Submitted!</h4>
-                <p class="text-xs text-stone-600 mb-4">আপনার Tracking ID সংরক্ষণ করুন:</p>
-                <div id="generatedId" class="py-2 px-4 bg-editorial border border-stone-300 rounded font-mono font-bold text-charcoal text-sm inline-block mb-4"></div>
-                <button onclick="closeApplyModal()" class="block w-full py-2.5 bg-charcoal text-editorial text-xs font-medium rounded-lg">Done</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative">
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-stone-400 hover:text-charcoal">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <h3 class="font-serif text-2xl font-bold text-charcoal mb-1">Member Login</h3>
-            <p class="text-xs text-stone-500 mb-6">Access your BDPlatform workspace</p>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-stone-700 mb-1">Email or User ID</label>
-                    <input type="text" required placeholder="Enter your email" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-stone-700 mb-1">Password</label>
-                    <input type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 text-sm bg-editorial border border-stone-200 rounded-lg focus:outline-none focus:border-charcoal">
-                </div>
-                <button type="submit" class="w-full py-3 bg-charcoal text-editorial text-sm font-medium rounded-lg hover:bg-stone-800 transition">
-                    Sign In
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Interactive Scripts -->
-    <script>
-        function openApplyModal(role) {
-            document.getElementById('modalRoleTitle').innerText = 'Apply: ' + role;
-            document.getElementById('applyForm').classList.remove('hidden');
-            document.getElementById('applySuccess').classList.add('hidden');
-            document.getElementById('applyModal').classList.remove('hidden');
-            document.getElementById('applyModal').classList.add('flex');
-        }
-        function closeApplyModal() {
-            document.getElementById('applyModal').classList.add('hidden');
-            document.getElementById('applyModal').classList.remove('flex');
-        }
-        function handleApply(e) {
-            e.preventDefault();
-            const randomNum = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('generatedId').innerText = 'BDP-2026-' + randomNum;
-            document.getElementById('applyForm').classList.add('hidden');
-            document.getElementById('applySuccess').classList.remove('hidden');
-        }
-        function openLoginModal() {
-            document.getElementById('loginModal').classList.remove('hidden');
-            document.getElementById('loginModal').classList.add('flex');
-        }
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.add('hidden');
-            document.getElementById('loginModal').classList.remove('flex');
-        }
-        function handleLogin(e) {
-            e.preventDefault();
-            alert('Invalid credentials or account pending approval.');
-            closeLoginModal();
-        }
-        function checkStatus() {
-            const val = document.getElementById('trackInput').value.trim();
-            const res = document.getElementById('trackResult');
-            res.classList.remove('hidden');
-            if(!val) {
-                res.className = 'mt-4 text-sm font-medium text-red-600';
-                res.innerText = 'অনুগ্রহ করে একটি সঠিক Tracking ID দিন।';
-            } else {
-                res.className = 'mt-4 text-sm font-medium text-emerald-700';
-                res.innerText = 'Status for ' + val + ': Under Editorial Review (আপনার আবেদনটি যাচাই করা হচ্ছে)।';
-            }
-        }
-        function submitContact(e) {
-            e.preventDefault();
-            document.getElementById('contactSuccess').classList.remove('hidden');
-            e.target.reset();
-        }
-    </script>
 </body>
 </html>
