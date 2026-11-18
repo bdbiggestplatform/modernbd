@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Login | BDPlatform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        editorial: '#FAF9F6',
+                        charcoal: '#1A1A1A',
+                        gold: '#C59B27',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-editorial text-charcoal font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Top Sticky Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-editorial/95 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="h-16 sm:h-20 flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-charcoal text-editorial flex items-center justify-center font-serif font-bold text-lg">B</div>
+                    <span class="font-serif font-bold text-xl tracking-tight text-charcoal">BD<span class="text-gold">Platform</span></span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
+                    <a href="index.html" class="hover:text-charcoal transition">Home</a>
+                    <a href="index.html#career" class="hover:text-charcoal transition">Career</a>
+                    <a href="application.html" class="hover:text-charcoal transition">Application</a>
+                    <a href="contact.html" class="hover:text-charcoal transition">Contact</a>
+                </nav>
+
+                <a href="index.html" class="px-4 py-2 text-xs sm:text-sm font-medium bg-white border border-stone-300 text-charcoal rounded-lg hover:bg-stone-50 transition">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+        <!-- Login Box Section -->
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 sm:p-10 border border-stone-200 shadow-xl relative">
+            
+            <div class="text-center mb-8">
+                <div class="w-12 h-12 rounded-xl bg-charcoal text-gold flex items-center justify-center text-xl font-serif font-bold mx-auto mb-3 shadow-md">
+                    BD
+                </div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal">Member Login</h2>
+                <p class="text-xs text-stone-500 mt-1">Access your BDPlatform workspace</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">ID Number / Email</label>
+                    <input type="text" id="loginId" required placeholder="Enter your ID or email" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Password</label>
+                    <input type="password" id="loginPass" required placeholder="••••••••" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-charcoal text-editorial text-sm font-medium rounded-xl hover:bg-stone-800 transition shadow-md">
+                    Login
+                </button>
+            </form>
+
+            <div id="loginMessage" class="mt-4 text-xs font-medium text-center hidden"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-stone-400 py-8 px-4 text-center text-xs border-t border-stone-800">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2026 BDPlatform. All rights reserved. Global Talent Studio.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('loginId').value.trim();
+            const msg = document.getElementById('loginMessage');
+            
+            msg.classList.remove('hidden');
+            msg.className = 'mt-4 text-xs font-medium text-center text-amber-600';
+            msg.innerText = 'Verifying credentials for ID: ' + id + ' (Account pending or approval required).';
+        }
+    </script>
+</body>
+</html>
