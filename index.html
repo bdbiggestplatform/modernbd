@@ -58,7 +58,8 @@
             </nav>
         </div>
     </header>
-        <!-- Hero Section -->
+
+    <!-- Hero Section -->
     <main>
         <section id="home" class="pt-14 pb-20 sm:pt-24 sm:pb-28 px-4 sm:px-6 border-b border-stone-200">
             <div class="max-w-5xl mx-auto text-center">
@@ -102,7 +103,8 @@
                 </div>
             </div>
         </section>
-                <!-- Career Opportunities Section (All 6 Cards) -->
+
+        <!-- Career Opportunities Section (All 6 Cards) -->
         <section id="career" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
             <div class="text-center max-w-2xl mx-auto mb-14">
                 <span class="text-xs font-semibold uppercase tracking-widest text-gold">Career Opportunities</span>
@@ -196,7 +198,8 @@
                 </div>
             </div>
         </section>
-                <!-- Application Tracking Section -->
+
+        <!-- Application Tracking Section -->
         <section id="application" class="py-16 px-4 sm:px-6 bg-white border-y border-stone-200">
             <div class="max-w-3xl mx-auto text-center">
                 <span class="text-xs font-semibold uppercase tracking-widest text-gold">Application Status</span>
@@ -212,14 +215,60 @@
                 <div id="trackResult" class="mt-4 text-sm font-medium hidden"></div>
             </div>
         </section>
-    </main>
+                        </main>
+                            <!-- Exact Dark Footer Matching Your Screenshot -->
+    <footer class="bg-[#111318] text-stone-300 py-16 px-6 sm:px-10 border-t border-stone-800 mt-20">
+        <div class="max-w-4xl mx-auto space-y-12">
+            
+            <!-- Top Box inside Footer -->
+            <div class="bg-[#1A1D24] p-8 rounded-2xl border border-stone-800 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-gold text-charcoal flex items-center justify-center font-serif font-bold text-xl">BD</div>
+                        <div>
+                            <span class="font-serif font-bold text-xl text-white block leading-none">BDPlatform</span>
+                            <span class="text-[10px] text-stone-400 tracking-wider uppercase font-medium">Global Talent & Editorial Studio</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-stone-400 max-w-md leading-relaxed">
+                        Bangladesh Biggest Platform — বাংলাদেশের দক্ষ ফ্রিল্যান্সার, লেখক এবং ডিজিটাল প্রফেশনালদের বিশ্ববাজারের সাথে যুক্ত করার একটি প্রিমিয়াম কর্পোরেট উদ্যোগ।
+                    </p>
+                </div>
+                <a href="contact.html" class="px-6 py-3 bg-stone-800 hover:bg-stone-700 text-white text-xs font-semibold rounded-xl border border-stone-700 transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-envelope text-gold"></i> Send Direct Message
+                </a>
+            </div>
 
-    <!-- Footer -->
-    <footer class="bg-charcoal text-stone-400 py-10 px-4 sm:px-6 text-center text-xs">
-        <div class="max-w-7xl mx-auto">
-            <div class="font-serif text-lg font-bold text-editorial mb-2">BD<span class="text-gold">Platform</span></div>
-            <p class="mb-4">Connecting Bangladeshi Talent with Global Standards.</p>
-            <p>&copy; 2026 BDPlatform. All rights reserved.</p>
+            <!-- Two Column Menus (Platform Menu & Corporate Contact) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-4">
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Platform Menu</h4>
+                    <ul class="space-y-3 text-sm text-stone-400">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#career" class="hover:text-white transition">Career Opportunities</a></li>
+                        <li><a href="#application" class="hover:text-white transition">Application Status</a></li>
+                        <li><a href="login.html" class="hover:text-white transition">Team Member Login</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Corporate Contact</h4>
+                    <div class="space-y-3 text-sm text-stone-400">
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-globe text-gold"></i> bdplatform.page.gd</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-envelope text-gold"></i> careers@bdplatform.page.gd</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-gold"></i> Dhaka, Bangladesh (Global Remote Operations)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 pt-8 border-t border-stone-800 gap-4">
+                <p>&copy; 2026 BDPlatform. All Rights Reserved. Proudly Representing Bangladesh Globally.</p>
+                <div class="flex space-x-6">
+                    <a href="contact.html" class="hover:text-stone-300 transition">Privacy Policy</a>
+                    <a href="contact.html" class="hover:text-stone-300 transition">Terms of Engagement</a>
+                </div>
+            </div>
+
         </div>
     </footer>
 
@@ -230,10 +279,10 @@
             const res = document.getElementById('trackResult');
             res.classList.remove('hidden');
             if(!val) {
-                res.className = 'mt-4 text-sm font-medium text-red-600';
+                res.className = 'mt-4 text-sm font-medium text-red-400';
                 res.innerText = 'অনুগ্রহ করে একটি সঠিক Tracking ID দিন।';
             } else {
-                res.className = 'mt-4 text-sm font-medium text-emerald-700';
+                res.className = 'mt-4 text-sm font-medium text-emerald-400';
                 res.innerText = 'Status for ' + val + ': Under Editorial Review (আপনার আবেদনটি যাচাই করা হচ্ছে)।';
             }
         }
