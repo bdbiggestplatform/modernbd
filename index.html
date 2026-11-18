@@ -27,26 +27,40 @@
 </head>
 <body class="bg-editorial text-charcoal font-sans antialiased">
 
-    <!-- Top Sticky Navigation Bar -->
+    <!-- Top Sticky Navigation Bar (Mobile & Desktop Friendly) -->
     <header class="sticky top-0 z-40 bg-editorial/95 backdrop-blur-md border-b border-stone-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-            <a href="#home" class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded bg-charcoal text-editorial flex items-center justify-center font-serif font-bold text-lg">B</div>
-                <span class="font-serif font-bold text-xl tracking-tight text-charcoal">BD<span class="text-gold">Platform</span></span>
-            </a>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <!-- Top Row: Logo & Login -->
+            <div class="h-16 sm:h-20 flex items-center justify-between">
+                <a href="#home" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-charcoal text-editorial flex items-center justify-center font-serif font-bold text-lg">B</div>
+                    <span class="font-serif font-bold text-xl tracking-tight text-charcoal">BD<span class="text-gold">Platform</span></span>
+                </a>
 
-            <nav class="flex items-center space-x-3 sm:space-x-7 text-xs sm:text-sm font-medium text-stone-600 overflow-x-auto">
-                <a href="#home" class="hover:text-charcoal transition whitespace-nowrap">Home</a>
-                <a href="#career" class="hover:text-charcoal transition whitespace-nowrap">Career</a>
-                <a href="#application" class="hover:text-charcoal transition whitespace-nowrap">Application</a>
-                <a href="#contact" class="hover:text-charcoal transition whitespace-nowrap">Contact</a>
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
+                    <a href="#home" class="hover:text-charcoal transition">Home</a>
+                    <a href="#career" class="hover:text-charcoal transition">Career</a>
+                    <a href="#application" class="hover:text-charcoal transition">Application</a>
+                    <a href="#contact" class="hover:text-charcoal transition">Contact</a>
+                </nav>
+
+                <button onclick="openLoginModal()" class="px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-charcoal text-editorial rounded-lg hover:bg-stone-800 transition">
+                    Login
+                </button>
+            </div>
+
+            <!-- Mobile Sub-bar Menu (Clean & Centered) -->
+            <nav class="flex md:hidden items-center justify-around py-2.5 border-t border-stone-200/70 text-xs font-medium text-stone-700">
+                <a href="#home" class="hover:text-gold transition">Home</a>
+                <a href="#career" class="hover:text-gold transition">Career</a>
+                <a href="#application" class="hover:text-gold transition">Application</a>
+                <a href="#contact" class="hover:text-gold transition">Contact</a>
             </nav>
-
-            <button onclick="openLoginModal()" class="ml-2 px-3 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-medium bg-charcoal text-editorial rounded-lg hover:bg-stone-800 transition whitespace-nowrap">
-                Login
-            </button>
         </div>
     </header>
+
+
         <!-- Hero Section -->
     <section id="home" class="pt-14 pb-20 sm:pt-24 sm:pb-28 px-4 sm:px-6 border-b border-stone-200">
         <div class="max-w-5xl mx-auto text-center">
