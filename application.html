@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Application | BDPlatform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        editorial: '#FAF9F6',
+                        charcoal: '#1A1A1A',
+                        gold: '#C59B27',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-editorial text-charcoal font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Top Sticky Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-editorial/95 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="h-16 sm:h-20 flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-charcoal text-editorial flex items-center justify-center font-serif font-bold text-lg">B</div>
+                    <span class="font-serif font-bold text-xl tracking-tight text-charcoal">BD<span class="text-gold">Platform</span></span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
+                    <a href="index.html" class="hover:text-charcoal transition">Home</a>
+                    <a href="index.html#career" class="hover:text-charcoal transition">Career</a>
+                    <a href="application.html" class="hover:text-charcoal transition">Application Status</a>
+                    <a href="contact.html" class="hover:text-charcoal transition">Contact</a>
+                </nav>
+
+                <a href="index.html" class="px-4 py-2 text-xs sm:text-sm font-medium bg-white border border-stone-300 text-charcoal rounded-lg hover:bg-stone-50 transition">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+        <!-- Application Form Section -->
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-8 sm:p-10 border border-stone-200 shadow-xl relative">
+            
+            <div class="text-center mb-8">
+                <span class="text-xs font-semibold uppercase tracking-widest text-gold bg-gold/10 px-3.5 py-1 rounded-full border border-gold/20 inline-block mb-3">
+                    Global Workforce
+                </span>
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal">Career Application Form</h2>
+                <p class="text-xs sm:text-sm text-stone-500 mt-1">আপনার পছন্দের পজিশনে আবেদন করতে নিচের ফর্মটি পূরণ করুন</p>
+            </div>
+
+            <!-- Application Form -->
+            <form id="applyForm" onsubmit="handleApplication(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Select Position / Track</label>
+                    <select id="roleSelect" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                        <option value="Story Writing">Story Writing</option>
+                        <option value="Story Management">Story Management</option>
+                        <option value="Website Handling">Website Handling</option>
+                        <option value="Content Management">Content Management</option>
+                        <option value="Social Media Management">Social Media Management</option>
+                        <option value="Data Management">Data Management</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Full Name</label>
+                    <input type="text" required placeholder="Enter your full name" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Email Address</label>
+                        <input type="email" required placeholder="you@example.com" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Phone / WhatsApp</label>
+                        <input type="tel" required placeholder="+880 1XXX-XXXXXX" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Portfolio / Experience Note</label>
+                    <textarea rows="3" placeholder="Briefly describe your experience or provide portfolio links..." class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-charcoal text-editorial text-sm font-medium rounded-xl hover:bg-stone-800 transition shadow-md">
+                    Submit Application
+                </button>
+            </form>
+
+            <!-- Success Box (Hidden Initially) -->
+            <div id="successBox" class="hidden text-center py-8">
+                <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Application Submitted!</h3>
+                <p class="text-xs sm:text-sm text-stone-600 mb-4">আপনার আবেদনটি সফলভাবে জমা হয়েছে। ভবিষ্যতে স্ট্যাটাস চেক করার জন্য নিচের Tracking ID টি সংরক্ষণ করুন:</p>
+                
+                <div id="generatedId" class="py-3 px-6 bg-editorial border border-stone-300 rounded-xl font-mono font-bold text-charcoal text-base inline-block mb-6 shadow-inner tracking-wider"></div>
+                
+                <div class="flex gap-3">
+                    <a href="index.html#application" class="flex-1 py-3 bg-charcoal text-editorial text-xs font-medium rounded-xl hover:bg-stone-800 transition text-center">
+                        Track Application Status
+                    </a>
+                    <a href="index.html" class="py-3 px-5 bg-stone-100 text-stone-700 text-xs font-medium rounded-xl hover:bg-stone-200 transition">
+                        Home
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-stone-400 py-8 px-4 text-center text-xs border-t border-stone-800">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2026 BDPlatform. All rights reserved. Global Talent Studio.</p>
+        </div>
+    </footer>
+
+    <!-- Script to handle URL role and generate ID -->
+    <script>
+        // Check if role is passed in URL (e.g. apply.html?role=Story-Writing)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role');
+            if(role) {
+                const formattedRole = role.replace(/-/g, ' ');
+                const select = document.getElementById('roleSelect');
+                for(let option of select.options) {
+                    if(option.value.toLowerCase() === formattedRole.toLowerCase()) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function handleApplication(e) {
+            e.preventDefault();
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            const trackingId = 'BDP-2026-' + randomNum;
+            
+            document.getElementById('generatedId').innerText = trackingId;
+            document.getElementById('applyForm').classList.add('hidden');
+            document.getElementById('successBox').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
