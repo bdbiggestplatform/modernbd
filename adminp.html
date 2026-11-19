@@ -1,1 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | BDPlatform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        editorial: '#FAF9F6',
+                        charcoal: '#1A1A1A',
+                        gold: '#C59B27',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-editorial text-charcoal font-sans antialiased flex flex-col min-h-screen">
 
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-charcoal text-editorial border-b border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="h-16 sm:h-20 flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-gold text-charcoal flex items-center justify-center font-serif font-bold text-lg">B</div>
+                    <span class="font-serif font-bold text-xl tracking-tight">BD<span class="text-gold">Platform</span> <span class="text-xs font-sans font-normal text-stone-400 ml-1">Admin</span></span>
+                </a>
+
+                <div class="flex items-center gap-3">
+                    <button id="logoutBtn" onclick="logoutAdmin()" class="hidden px-3.5 py-2 text-xs font-medium bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg border border-stone-700 transition">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                    </button>
+                    <a href="index.html" class="px-3.5 py-2 text-xs font-medium bg-editorial text-charcoal rounded-lg hover:bg-stone-200 transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-10 w-full">
+
+        <!-- Admin Login Screen -->
+        <div id="loginSection" class="max-w-md mx-auto bg-white rounded-2xl p-8 border border-stone-200 shadow-xl mt-8">
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 rounded-2xl bg-charcoal text-gold flex items-center justify-center text-2xl mx-auto mb-4 shadow-md">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span class="text-[11px] font-semibold uppercase tracking-widest text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/20">
+                    Restricted Access
+                </span>
+                <h1 class="font-serif text-2xl font-bold text-charcoal mt-3">Admin Control Panel</h1>
+                <p class="text-xs text-stone-500 mt-1">Enter your admin passkey to manage applications</p>
+            </div>
+
+            <form id="adminLoginForm" onsubmit="loginAdmin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Admin Passkey</label>
+                    <input type="password" id="adminPassInput" required placeholder="Enter admin password" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                </div>
+                <p id="loginError" class="hidden text-xs text-red-600 font-medium"></p>
+                <button type="submit" class="w-full py-3.5 bg-charcoal text-editorial text-sm font-semibold rounded-xl hover:bg-stone-800 transition shadow-md">
+                    Access Dashboard
+                </button>
+            </form>
+        </div>
+
+        <!-- Admin Dashboard (Hidden until logged in) -->
+        <div id="dashboardSection" class="hidden space-y-8">
+
+            <!-- Header & Refresh Button -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-widest text-gold">Management Console</span>
+                    <h1 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal">Candidate Applications</h1>
+                </div>
+                <button type="button" onclick="loadApplications()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-charcoal text-editorial text-xs sm:text-sm font-semibold rounded-xl hover:bg-stone-800 transition shadow-sm">
+                    <i id="refreshIcon" class="fa-solid fa-rotate text-gold"></i> Refresh Data
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                    <span class="text-xs text-stone-500 font-medium">Total Applications</span>
+                    <p id="totalCount" class="text-2xl sm:text-3xl font-bold text-charcoal mt-1">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                    <span class="text-xs text-amber-600 font-medium">Waiting</span>
+                    <p id="waitingCount" class="text-2xl sm:text-3xl font-bold text-amber-600 mt-1">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                    <span class="text-xs text-emerald-600 font-medium">Approved</span>
+                    <p id="approvedCount" class="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">0</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                    <span class="text-xs text-red-600 font-medium">Rejected</span>
+                    <p id="rejectedCount" class="text-2xl sm:text-3xl font-bold text-red-600 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Search & Status Filter -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search by Tracking ID, Name, Phone or Post..." class="w-full pl-10 pr-4 py-2.5 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                </div>
+                <select id="statusFilter" onchange="renderTable()" class="px-4 py-2.5 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition sm:w-48">
+                    <option value="ALL">All Statuses</option>
+                    <option value="Waiting">Waiting</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+
+            <!-- Applications Table -->
+            <div class="bg-white rounded-2xl border border-stone-200 shadow-lg overflow-hidden">
+                <div id="loadingBox" class="p-12 text-center text-sm text-stone-500">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl text-gold mb-3 block"></i>
+                    Loading applications from backend...
+                </div>
+
+                <div id="tableWrapper" class="hidden overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-charcoal text-editorial text-xs uppercase tracking-wider">
+                                <th class="py-4 px-4">Tracking ID</th>
+                                <th class="py-4 px-4">Applicant</th>
+                                <th class="py-4 px-4">Post & Area</th>
+                                <th class="py-4 px-4">Contact</th>
+                                <th class="py-4 px-4">Status</th>
+                                <th class="py-4 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsBody" class="divide-y divide-stone-200 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Candidate Details Modal -->
+    <div id="detailsModal" class="fixed inset-0 z-50 hidden bg-charcoal/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-stone-200 shadow-2xl p-6 sm:p-8">
+            <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-5">
+                <div>
+                    <span id="modalTrackingId" class="text-xs font-mono font-bold text-gold bg-gold/10 px-2.5 py-1 rounded">BDP-2026-0000</span>
+                    <h3 id="modalName" class="font-serif text-xl sm:text-2xl font-bold text-charcoal mt-1">Candidate Name</h3>
+                </div>
+                <button type="button" onclick="closeModal()" class="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-charcoal flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="modalContent" class="space-y-4 text-sm text-stone-700"></div>
+
+            <div class="border-t border-stone-200 pt-5 mt-6 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="updateStatus('Waiting')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-100 text-amber-800 hover:bg-amber-200 transition">
+                        Set Waiting
+                    </button>
+                    <button type="button" onclick="updateStatus('Approved')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">
+                        Approve
+                    </button>
+                    <button type="button" onclick="updateStatus('Rejected')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white hover:bg-red-700 transition">
+                        Reject
+                    </button>
+                </div>
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+                  </div>
+                      <!-- Footer -->
+    <footer class="bg-charcoal text-stone-400 py-6 px-4 text-center text-xs border-t border-stone-800">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2026 BDPlatform Admin Console. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVmW-0fb3_WFAj3bCzy9W9PBr4IzhcCdJOcFYaxjnA3YUCO_sD4aLHSrYTScDIJqx5/exec";
+        const ADMIN_PASS = "BDP@2026"; // চাইলে এখানে নিজের পছন্দমতো পাসওয়ার্ড বদলে নিতে পারেন
+
+        let allApplications = [];
+        let selectedApplicant = null;
+
+        function loginAdmin(e) {
+            e.preventDefault();
+            const pass = document.getElementById("adminPassInput").value.trim();
+            const err = document.getElementById("loginError");
+
+            if (pass === ADMIN_PASS) {
+                sessionStorage.setItem("bdp_admin_auth", "true");
+                showDashboard();
+            } else {
+                err.textContent = "Invalid admin passkey. Please try again.";
+                err.classList.remove("hidden");
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem("bdp_admin_auth");
+            location.reload();
+        }
+
+        function showDashboard() {
+            document.getElementById("loginSection").classList.add("hidden");
+            document.getElementById("dashboardSection").classList.remove("hidden");
+            document.getElementById("logoutBtn").classList.remove("hidden");
+            loadApplications();
+        }
+
+        if (sessionStorage.getItem("bdp_admin_auth") === "true") {
+            showDashboard();
+        }
+
+        async function loadApplications() {
+            const loadingBox = document.getElementById("loadingBox");
+            const tableWrapper = document.getElementById("tableWrapper");
+            const icon = document.getElementById("refreshIcon");
+
+            loadingBox.classList.remove("hidden");
+            tableWrapper.classList.add("hidden");
+            icon.classList.add("fa-spin");
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=adminList`);
+                const data = await res.json();
+                allApplications = Array.isArray(data) ? data.reverse() : [];
+                updateStats();
+                renderTable();
+                loadingBox.classList.add("hidden");
+                tableWrapper.classList.remove("hidden");
+            } catch (error) {
+                loadingBox.innerHTML = `<span class="text-red-600 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Failed to load data. Check your Google Apps Script deployment.</span>`;
+                console.error(error);
+            } finally {
+                icon.classList.remove("fa-spin");
+            }
+        }
+
+        function updateStats() {
+            const total = allApplications.length;
+            const waiting = allApplications.filter(a => (a.status || "Waiting").toLowerCase() === "waiting").length;
+            const approved = allApplications.filter(a => (a.status || "").toLowerCase() === "approved").length;
+            const rejected = allApplications.filter(a => (a.status || "").toLowerCase() === "rejected").length;
+
+            document.getElementById("totalCount").textContent = total;
+            document.getElementById("waitingCount").textContent = waiting;
+            document.getElementById("approvedCount").textContent = approved;
+            document.getElementById("rejectedCount").textContent = rejected;
+        }
+
+        function getStatusBadge(status) {
+            const st = status || "Waiting";
+            if (st.toLowerCase() === "approved") {
+                return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700"><i class="fa-solid fa-circle-check"></i> Approved</span>`;
+            }
+            if (st.toLowerCase() === "rejected") {
+                return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>`;
+            }
+            return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800"><i class="fa-solid fa-clock"></i> Waiting</span>`;
+        }
+
+        function renderTable() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+            const tbody = document.getElementById("applicationsBody");
+
+            const filtered = allApplications.filter(item => {
+                const st = item.status || "Waiting";
+                const matchesStatus = statusFilter === "ALL" || st.toLowerCase() === statusFilter.toLowerCase();
+                const matchesQuery =
+                    !query ||
+                    String(item.trackingId || "").toLowerCase().includes(query) ||
+                    String(item.fullName || "").toLowerCase().includes(query) ||
+                    String(item.phone || "").toLowerCase().includes(query) ||
+                    String(item.post || "").toLowerCase().includes(query);
+                return matchesStatus && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-10 text-center text-stone-500">No matching applications found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((app, index) => `
+                <tr class="hover:bg-editorial/70 transition">
+                    <td class="py-4 px-4 font-mono text-xs font-bold text-charcoal whitespace-nowrap">${app.trackingId || "-"}</td>
+                    <td class="py-4 px-4">
+                        <div class="font-semibold text-charcoal">${app.fullName || "-"}</div>
+                        <div class="text-xs text-stone-500">${app.phone || "-"}</div>
+                    </td>
+                    <td class="py-4 px-4">
+                        <div class="font-medium text-charcoal">${app.post || "-"}</div>
+                        <div class="text-xs text-stone-500">${app.workArea || "-"}</div>
+                    </td>
+                    <td class="py-4 px-4 text-xs text-stone-600">
+                        <span class="font-semibold">${app.contactType || ""}:</span> ${app.contactAccount || "-"}
+                    </td>
+                    <td class="py-4 px-4 whitespace-nowrap">${getStatusBadge(app.status)}</td>
+                    <td class="py-4 px-4 text-right whitespace-nowrap space-x-1.5">
+                        <button type="button" onclick="openDetailsById('${app.trackingId}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-charcoal text-editorial hover:bg-stone-800 transition">
+                            View
+                        </button>
+                        <button type="button" onclick="quickStatus('${app.trackingId}', 'Approved')" title="Approve" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button type="button" onclick="quickStatus('${app.trackingId}', 'Rejected')" title="Reject" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white hover:bg-red-700 transition">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        function openDetailsById(trackingId) {
+            const app = allApplications.find(a => a.trackingId === trackingId);
+            if (!app) return;
+            selectedApplicant = app;
+
+            document.getElementById("modalTrackingId").textContent = app.trackingId || "";
+            document.getElementById("modalName").textContent = app.fullName || "Candidate";
+
+            let eduExtra = "";
+            if (app.whichClass || app.institute) {
+                eduExtra += `<p><strong>Class / Institute:</strong> ${app.whichClass || "-"} | ${app.institute || "-"}</p>`;
+            }
+            if (app.semesterYear) {
+                eduExtra += `<p><strong>Semester/Year:</strong> ${app.semesterYear}</p>`;
+            }
+
+            const filesHtml = `
+                <div class="flex flex-wrap gap-3 pt-2">
+                    ${app.pictureUrl ? `<a href="${app.pictureUrl}" target="_blank" class="px-3.5 py-2 rounded-xl bg-editorial border border-stone-300 text-xs font-semibold text-charcoal hover:bg-stone-100"><i class="fa-solid fa-image mr-1.5 text-gold"></i> View Picture</a>` : `<span class="text-xs text-stone-400">No Picture Link</span>`}
+                    ${app.cvUrl ? `<a href="${app.cvUrl}" target="_blank" class="px-3.5 py-2 rounded-xl bg-editorial border border-stone-300 text-xs font-semibold text-charcoal hover:bg-stone-100"><i class="fa-solid fa-file-pdf mr-1.5 text-gold"></i> View CV</a>` : `<span class="text-xs text-stone-400">No CV Uploaded</span>`}
+                </div>
+            `;
+
+            document.getElementById("modalContent").innerHTML = `
+                <div class="flex items-center justify-between bg-editorial p-3.5 rounded-xl border border-stone-200">
+                    <span class="text-xs font-semibold text-stone-500">Current Status:</span>
+                    ${getStatusBadge(app.status)}
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3 bg-editorial/60 p-4 rounded-xl border border-stone-200/80 text-xs sm:text-sm">
+                    <p><strong>Phone:</strong> ${app.phone || "-"}</p>
+                    <p><strong>Date of Birth:</strong> ${app.dob || "-"}</p>
+                    <p><strong>Post:</strong> ${app.post || "-"}</p>
+                    <p><strong>Work Area:</strong> ${app.workArea || "-"}</p>
+                    <p><strong>Marital Status:</strong> ${app.maritalStatus || "-"}</p>
+                    <p><strong>Contact:</strong> ${app.contactType || ""} (${app.contactAccount || "-"})</p>
+                    <p class="sm:col-span-2"><strong>Address:</strong> ${app.address || "-"}</p>
+                    <p class="sm:col-span-2"><strong>Education:</strong> ${app.education || "-"}</p>
+                    ${eduExtra ? `<div class="sm:col-span-2 space-y-1">${eduExtra}</div>` : ""}
+                    <p><strong>Agree Terms:</strong> ${app.agreeTerms || "-"}</p>
+                    <p><strong>Submitted:</strong> ${app.date || "-"}</p>
+                </div>
+                ${filesHtml}
+            `;
+
+            document.getElementById("detailsModal").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("detailsModal").classList.add("hidden");
+            selectedApplicant = null;
+        }
+
+        async function quickStatus(trackingId, newStatus) {
+            const app = allApplications.find(a => a.trackingId === trackingId);
+            if (!app) return;
+            selectedApplicant = app;
+            await updateStatus(newStatus);
+        }
+
+        async function updateStatus(newStatus) {
+            if (!selectedApplicant) return;
+            const id = selectedApplicant.trackingId;
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        action: "updateStatus",
+                        trackingId: id,
+                        status: newStatus
+                    })
+                });
+
+                selectedApplicant.status = newStatus;
+                updateStats();
+                renderTable();
+                closeModal();
+                alert(`Status for ${id} updated to ${newStatus}!`);
+            } catch (error) {
+                alert("Failed to update status. Please try again.");
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+  </html>
+  
