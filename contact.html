@@ -137,7 +137,8 @@
                     </div>
                 </div>
             </div>
-                                    <!-- Right Column: Contact Message Form -->
+
+            <!-- Right Column: Contact Message Form -->
             <div class="lg:col-span-3">
                 <div id="message-section" class="bg-white rounded-2xl p-6 sm:p-10 border border-stone-200 shadow-xl scroll-mt-24">
                     <h2 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal mb-2">Send Us a Message</h2>
@@ -200,7 +201,7 @@
     </footer>
 
     <script>
-        const CONTACT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVmW-0fb3_WFAj3bCzy9W9PBr4IzhcCdJOcFYaxjnA3YUCO_sD4aLHSrYTScDIJqx5/exec";
+        const CONTACT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby6djkvKacDBiQtZ5CYS9LtQMKz0a7zqYSi6U-q-MOatsCrunF-U_U0RM6tva3ZpcALIg/exec";
 
         async function submitContactForm(event) {
             event.preventDefault();
@@ -220,17 +221,21 @@
             };
 
             try {
-                await fetch(CONTACT_SCRIPT_URL, {
+                const response = await fetch(CONTACT_SCRIPT_URL, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(payload)
                 });
+                const result = await response.json();
+                if (!result || result.success !== true) {
+                    throw new Error(result?.error || "Failed to send message.");
+                }
 
                 form.reset();
                 form.classList.add("hidden");
                 successBox.classList.remove("hidden");
             } catch (error) {
-                alert("Failed to send message. Please try again.");
+                alert("Failed to send message: " + (error.message || "Please try again."));
                 console.error(error);
             } finally {
                 btn.disabled = false;
