@@ -52,115 +52,171 @@
     </header>
 
     <!-- Main Content Container -->
-    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 py-16 w-full">
-        <div class="bg-white rounded-2xl p-8 sm:p-12 border border-stone-200 shadow-xl">
+    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16 w-full">
+        <div class="bg-white rounded-2xl p-6 sm:p-12 border border-stone-200 shadow-xl">
             
-            <div class="text-center mb-10">
+            <div class="text-center mb-8">
                 <span class="text-xs font-semibold uppercase tracking-widest text-gold bg-gold/10 px-3.5 py-1.5 rounded-full border border-gold/20 inline-block mb-3">
                     Application Portal
                 </span>
-                <h1 class="font-serif text-3xl font-bold text-charcoal">BD Biggest Platform Ltd</h1>
-                <p class="text-xs sm:text-sm text-stone-500 mt-1">Choose your preferred application method below</p>
+                <h1 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal">BD Biggest Platform Ltd</h1>
+                <p class="text-xs sm:text-sm text-stone-500 mt-1">Global Outsourcing & Editorial Studio</p>
             </div>
 
-            <!-- Choice Box -->
-            <div id="choiceContainer" class="space-y-4 max-w-md mx-auto">
-                <a href="https://forms.gle/4ALKGsVbhxb226b97" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition shadow-md text-base">
-                    <i class="fa-solid fa-file-lines"></i> 1. Google Form Application
-                </a>
-                
-                <button type="button" onclick="openDirectForm()" class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-charcoal text-editorial font-semibold rounded-xl hover:bg-stone-800 transition shadow-md text-base">
-                    <i class="fa-solid fa-pen-to-square text-gold"></i> 2. Direct Form Application
-                </button>
+            <!-- Initial Willingness Condition Box -->
+            <div id="consentBox" class="bg-editorial border border-stone-200 rounded-2xl p-6 sm:p-8 text-center max-w-xl mx-auto">
+                <div class="w-12 h-12 rounded-xl bg-charcoal text-gold flex items-center justify-center text-xl mx-auto mb-4 shadow-sm">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                </div>
+                <h2 class="font-serif text-xl sm:text-2xl font-bold text-charcoal mb-3">Voluntary Application Confirmation</h2>
+                <p class="text-sm text-stone-600 leading-relaxed mb-6">
+                    Are you applying voluntarily of your own free will and agreement to proceed with the application process at BD Biggest Platform Ltd?
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+                    <button type="button" onclick="acceptConsent()" class="px-7 py-3 bg-charcoal text-editorial text-sm font-semibold rounded-xl hover:bg-stone-800 transition shadow-md">
+                        Yes
+                    </button>
+                    <button type="button" onclick="declineConsent()" class="px-7 py-3 bg-white text-charcoal border border-stone-300 text-sm font-semibold rounded-xl hover:bg-stone-100 transition">
+                        No
+                    </button>
+                </div>
             </div>
 
-            <!-- Dynamic Form Area -->
-            <div id="applicationBox" class="mt-8"></div>
-
-        </div>
-    </main>
-        <!-- Footer -->
-    <footer class="bg-charcoal text-stone-400 py-8 px-4 text-center text-xs border-t border-stone-800">
-        <div class="max-w-7xl mx-auto">
-            <p>&copy; 2026 BDPlatform. All rights reserved. Global Talent Studio.</p>
-        </div>
-    </footer>
-
-    <!-- Script Handling Direct Form & Google Script Integration -->
-    <script>
-    function openDirectForm() {
-        // Hide choice buttons once direct form is opened
-        document.getElementById("choiceContainer").style.display = "none";
-        
-        document.getElementById("applicationBox").innerHTML = `
-            <div class="border-t border-stone-200 pt-8 mt-6">
-                <h2 class="font-serif text-2xl font-bold text-charcoal mb-6 text-center">Direct Application Form</h2>
+            <!-- Direct Application Form (Hidden until Yes is clicked) -->
+            <div id="formWrapper" class="hidden border-t border-stone-200 pt-8 mt-6">
+                <h2 class="font-serif text-2xl font-bold text-charcoal mb-6 text-center">Application Form</h2>
 
                 <form id="directApplicationForm" class="space-y-5 text-left">
+                    <!-- 1. Full Name -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Full Name</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">1. Full Name *</label>
                         <input type="text" name="full_name" required placeholder="Enter your full name" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
                     </div>
 
+                    <!-- 2. Address -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Address</label>
-                        <textarea name="address" rows="3" required placeholder="Enter your current address" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition"></textarea>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">2. Address *</label>
+                        <textarea name="address" rows="3" required placeholder="Enter your full address" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition"></textarea>
                     </div>
 
+                    <!-- 3. Date of Birth & 4. Phone Number -->
                     <div class="grid sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Date of Birth</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">3. Date of Birth *</label>
                             <input type="date" name="date_of_birth" required class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Phone Number</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">4. Phone Number *</label>
                             <input type="tel" name="phone_number" required placeholder="+880 1XXX-XXXXXX" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
                         </div>
                     </div>
 
+                    <!-- 5. Education Qualification -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Educational Qualification</label>
-                        <textarea name="educational_qualification" rows="2" required placeholder="e.g. B.Sc in CSE, University name" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Post</label>
-                        <select name="post" required class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
-                            <option value="">Select Post</option>
-                            <option value="Story Writing">Story Writing</option>
-                            <option value="Client Handling">Client Handling</option>
-                            <option value="Story Management">Story Management</option>
-                            <option value="Website Handling">Website Handling</option>
-                            <option value="Deal with">Deal with</option>
-                            <option value="HR Department">HR Department</option>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">5. Education Qualification *</label>
+                        <select id="educationSelect" name="education_qualification" required onchange="handleEducationChange()" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                            <option value="">Select Education Qualification</option>
+                            <option value="Under SSC">Under SSC</option>
+                            <option value="SSC">SSC</option>
+                            <option value="HSC">HSC</option>
+                            <option value="Hons Running">Hons Running</option>
+                            <option value="Hons Complete">Hons Complete</option>
+                            <option value="Masters">Masters</option>
+                            <option value="Diploma">Diploma</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Contact Information</label>
-                        <input type="text" name="contact_info" placeholder="WhatsApp / IMO / Gmail" required class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    <!-- Conditional Box for Under SSC -->
+                    <div id="underSscFields" class="hidden bg-editorial/80 p-4 rounded-xl border border-gold/30 space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Which Class *</label>
+                            <input type="text" id="whichClassInput" name="which_class" placeholder="e.g. Class 8, Class 9" class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Institute Name *</label>
+                            <input type="text" id="instituteNameInput" name="institute_name" placeholder="Enter your school / institute name" class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                        </div>
                     </div>
 
+                    <!-- Conditional Box for Hons Running or Diploma -->
+                    <div id="semesterYearField" class="hidden bg-editorial/80 p-4 rounded-xl border border-gold/30">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Which Semester/Year *</label>
+                        <input type="text" id="semesterYearInput" name="semester_year" placeholder="e.g. 2nd Year or 4th Semester" class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    </div>
+
+                    <!-- 6. Post -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Marital Status</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">6. Post *</label>
+                        <select name="post" required class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                            <option value="">Select Post</option>
+                            <option value="Story Writing">Story Writing</option>
+                            <option value="Story Management">Story Management</option>
+                            <option value="Website Handling">Website Handling</option>
+                            <option value="Social Media Management">Social Media Management</option>
+                            <option value="HR Department">HR Department</option>
+                        </select>
+                    </div>
+                                        <!-- 7. Contact Information -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">7. Contact Information *</label>
+                        <select id="contactTypeSelect" name="contact_type" required onchange="updateContactPlaceholder()" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                            <option value="">Select Contact Platform</option>
+                            <option value="What's App">What's App</option>
+                            <option value="Imo">Imo</option>
+                            <option value="Email">Email</option>
+                        </select>
+                    </div>
+
+                    <!-- 8. What's App / Imo / Email Account -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">8. What's App / Imo / Email Account *</label>
+                        <input type="text" id="contactAccountInput" name="contact_account" required placeholder="Enter your What's App / Imo / Email account" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    </div>
+
+                    <!-- 9. Marital Status -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">9. Marital Status *</label>
                         <select name="marital_status" required class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
-                            <option value="">Select Status</option>
+                            <option value="">Select Marital Status</option>
                             <option value="Single">Single</option>
-                            <option value="In a relationship">In a relationship</option>
+                            <option value="In a Relationship">In a Relationship</option>
                             <option value="Married">Married</option>
                             <option value="Divorced">Divorced</option>
                             <option value="Widow">Widow</option>
                         </select>
                     </div>
 
+                    <!-- 10. Work Area -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">Picture</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">10. Work Area *</label>
+                        <input type="text" name="work_area" required placeholder="Enter your preferred work area / location" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    </div>
+
+                    <!-- 11. Picture (Required) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">11. Please Upload a Clear Picture of Candidate *</label>
                         <input type="file" name="picture" accept="image/*" required class="w-full px-3 py-2 text-sm bg-editorial border border-stone-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-charcoal file:text-editorial hover:file:bg-stone-800 transition">
                     </div>
 
+                    <!-- 12. CV (Optional - not required) -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">CV</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">12. Please Upload a Real CV of Candidate (if any)</label>
                         <input type="file" name="cv" accept=".pdf,.doc,.docx" class="w-full px-3 py-2 text-sm bg-editorial border border-stone-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-charcoal file:text-editorial hover:file:bg-stone-800 transition">
+                    </div>
+
+                    <!-- 13. Agree Terms and Conditions (Yes / No required) -->
+                    <div class="bg-editorial border border-stone-200 rounded-xl p-4">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-2.5">13. Agree Terms and Conditions *</label>
+                        <div class="flex items-center gap-6 text-sm font-medium text-charcoal">
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="agree_terms" value="Yes" required class="w-4 h-4 accent-charcoal">
+                                <span>Yes</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="agree_terms" value="No" required class="w-4 h-4 accent-charcoal">
+                                <span>No</span>
+                            </label>
+                        </div>
                     </div>
 
                     <button type="submit" class="submit-btn w-full py-4 mt-4 bg-charcoal text-editorial font-semibold rounded-xl hover:bg-stone-800 transition shadow-md text-base">
@@ -168,9 +224,76 @@
                     </button>
                 </form>
             </div>
-        `;
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-stone-400 py-8 px-4 text-center text-xs border-t border-stone-800">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2026 BDPlatform. All rights reserved. Global Talent Studio.</p>
+        </div>
+    </footer>
+
+    <!-- Script Handling Consent, Conditional Fields & Google Script Submission -->
+    <script>
+    function acceptConsent() {
+        document.getElementById("consentBox").classList.add("hidden");
+        document.getElementById("formWrapper").classList.remove("hidden");
     }
-     
+
+    function declineConsent() {
+        window.location.href = "index.html";
+    }
+
+    function handleEducationChange() {
+        const edu = document.getElementById("educationSelect").value;
+        const underSscBox = document.getElementById("underSscFields");
+        const semesterBox = document.getElementById("semesterYearField");
+
+        const classInput = document.getElementById("whichClassInput");
+        const instituteInput = document.getElementById("instituteNameInput");
+        const semesterInput = document.getElementById("semesterYearInput");
+
+        // Reset visibility and required states
+        underSscBox.classList.add("hidden");
+        semesterBox.classList.add("hidden");
+
+        classInput.required = false;
+        instituteInput.required = false;
+        semesterInput.required = false;
+
+        if (edu === "Under SSC") {
+            underSscBox.classList.remove("hidden");
+            classInput.required = true;
+            instituteInput.required = true;
+            semesterInput.value = "";
+        } else if (edu === "Hons Running" || edu === "Diploma") {
+            semesterBox.classList.remove("hidden");
+            semesterInput.required = true;
+            classInput.value = "";
+            instituteInput.value = "";
+        } else {
+            classInput.value = "";
+            instituteInput.value = "";
+            semesterInput.value = "";
+        }
+    }
+
+    function updateContactPlaceholder() {
+        const type = document.getElementById("contactTypeSelect").value;
+        const accountInput = document.getElementById("contactAccountInput");
+        if (type === "What's App") {
+            accountInput.placeholder = "Enter your What's App number";
+        } else if (type === "Imo") {
+            accountInput.placeholder = "Enter your Imo number";
+        } else if (type === "Email") {
+            accountInput.placeholder = "Enter your Email address";
+        } else {
+            accountInput.placeholder = "Enter your What's App / Imo / Email account";
+        }
+    }
+
     document.addEventListener("submit", async function(event) {
         if (event.target.id !== "directApplicationForm") return;
 
@@ -199,18 +322,25 @@
 
         const picture = await readFile(pictureFile);
         const cv = await readFile(cvFile);
+        const agreeTermsValue = form.querySelector('input[name="agree_terms"]:checked')?.value || "";
 
         const data = {
             fullName: form.full_name.value,
             address: form.address.value,
             dateOfBirth: form.date_of_birth.value,
             phoneNumber: form.phone_number.value,
-            educationalQualification: form.educational_qualification.value,
+            educationQualification: form.education_qualification.value,
+            whichClass: form.which_class ? form.which_class.value : "",
+            instituteName: form.institute_name ? form.institute_name.value : "",
+            semesterYear: form.semester_year ? form.semester_year.value : "",
             post: form.post.value,
-            contactInformation: form.contact_info.value,
+            contactType: form.contact_type.value,
+            contactAccount: form.contact_account.value,
             maritalStatus: form.marital_status.value,
+            workArea: form.work_area.value,
             picture: picture,
-            cv: cv
+            cv: cv,
+            agreeTerms: agreeTermsValue
         };
 
         try {
@@ -227,6 +357,7 @@
 
             alert("Application submitted successfully!");
             form.reset();
+            handleEducationChange();
 
         } catch (error) {
             alert("Submission failed. Please try again.");
@@ -238,5 +369,4 @@
     });
     </script>
 </body>
-    </html>
-    
+</html>
