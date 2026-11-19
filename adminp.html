@@ -83,56 +83,86 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <span class="text-xs font-semibold uppercase tracking-widest text-gold">Management Console</span>
-                    <h1 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal">Applicant Directory</h1>
-                    <p class="text-xs text-stone-500 mt-1">Click on any applicant's ID or Name to view full form details, picture & CV</p>
+                    <h1 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal">Admin Workspace</h1>
+                    <p class="text-xs text-stone-500 mt-1">Switch between Applications and Messages tabs</p>
                 </div>
-                <button type="button" onclick="loadApplications()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-charcoal text-editorial text-xs sm:text-sm font-semibold rounded-xl hover:bg-stone-800 transition shadow-sm">
+                <button type="button" onclick="refreshActiveTab()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-charcoal text-editorial text-xs sm:text-sm font-semibold rounded-xl hover:bg-stone-800 transition shadow-sm">
                     <i id="refreshIcon" class="fa-solid fa-rotate text-gold"></i> Refresh Data
                 </button>
             </div>
 
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
-                    <span class="text-xs text-stone-500 font-medium">Total Applicants</span>
-                    <p id="totalCount" class="text-2xl sm:text-3xl font-bold text-charcoal mt-1">0</p>
+            <!-- Navigation Tabs: Applications & Messages -->
+            <div class="flex items-center gap-2 border-b border-stone-200 pb-3">
+                <button type="button" id="tabApplicationsBtn" onclick="switchTab('applications')" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-charcoal text-editorial shadow-sm transition">
+                    <i class="fa-solid fa-users mr-1.5 text-gold"></i> Applications
+                </button>
+                <button type="button" id="tabMessagesBtn" onclick="switchTab('messages')" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50 transition">
+                    <i class="fa-solid fa-envelope mr-1.5 text-gold"></i> Messages
+                </button>
+            </div>
+
+            <!-- APPLICATIONS TAB CONTENT -->
+            <div id="applicationsTabContent" class="space-y-8">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                        <span class="text-xs text-stone-500 font-medium">Total Applicants</span>
+                        <p id="totalCount" class="text-2xl sm:text-3xl font-bold text-charcoal mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                        <span class="text-xs text-amber-600 font-medium">Waiting</span>
+                        <p id="waitingCount" class="text-2xl sm:text-3xl font-bold text-amber-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                        <span class="text-xs text-emerald-600 font-medium">Approved</span>
+                        <p id="approvedCount" class="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
+                        <span class="text-xs text-red-600 font-medium">Rejected</span>
+                        <p id="rejectedCount" class="text-2xl sm:text-3xl font-bold text-red-600 mt-1">0</p>
+                    </div>
                 </div>
-                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
-                    <span class="text-xs text-amber-600 font-medium">Waiting</span>
-                    <p id="waitingCount" class="text-2xl sm:text-3xl font-bold text-amber-600 mt-1">0</p>
+
+                <!-- Search & Status Filter -->
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-grow">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                        <input type="text" id="searchInput" oninput="renderList()" placeholder="Search by Tracking ID or Applicant Name..." class="w-full pl-10 pr-4 py-2.5 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                    </div>
+                    <select id="statusFilter" onchange="renderList()" class="px-4 py-2.5 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition sm:w-48">
+                        <option value="ALL">All Statuses</option>
+                        <option value="Waiting">Waiting</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
                 </div>
-                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
-                    <span class="text-xs text-emerald-600 font-medium">Approved</span>
-                    <p id="approvedCount" class="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">0</p>
-                </div>
-                <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
-                    <span class="text-xs text-red-600 font-medium">Rejected</span>
-                    <p id="rejectedCount" class="text-2xl sm:text-3xl font-bold text-red-600 mt-1">0</p>
+
+                <!-- Clean ID & Name List -->
+                <div class="bg-white rounded-2xl border border-stone-200 shadow-lg overflow-hidden">
+                    <div id="loadingBox" class="p-12 text-center text-sm text-stone-500">
+                        <i class="fa-solid fa-spinner fa-spin text-2xl text-gold mb-3 block"></i>
+                        Loading applications from backend...
+                    </div>
+
+                    <div id="listWrapper" class="hidden divide-y divide-stone-200"></div>
                 </div>
             </div>
 
-            <!-- Search & Status Filter -->
-            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row gap-3">
-                <div class="relative flex-grow">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
-                    <input type="text" id="searchInput" oninput="renderList()" placeholder="Search by Tracking ID or Applicant Name..." class="w-full pl-10 pr-4 py-2.5 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
-                </div>
-                <select id="statusFilter" onchange="renderList()" class="px-4 py-2.5 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition sm:w-48">
-                    <option value="ALL">All Statuses</option>
-                    <option value="Waiting">Waiting</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
-                </select>
-            </div>
+            <!-- MESSAGES TAB CONTENT (Hidden until Messages tab is clicked) -->
+            <div id="messagesTabContent" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-stone-200 shadow-lg overflow-hidden">
+                    <div class="px-6 py-4 bg-charcoal text-editorial flex items-center justify-between">
+                        <h2 class="font-serif text-lg font-bold">Contact Inquiries & Messages</h2>
+                        <span id="messagesBadgeCount" class="text-xs font-mono bg-gold/20 text-gold px-3 py-1 rounded-full">0 Messages</span>
+                    </div>
 
-            <!-- Clean ID & Name List -->
-            <div class="bg-white rounded-2xl border border-stone-200 shadow-lg overflow-hidden">
-                <div id="loadingBox" class="p-12 text-center text-sm text-stone-500">
-                    <i class="fa-solid fa-spinner fa-spin text-2xl text-gold mb-3 block"></i>
-                    Loading applications from backend...
-                </div>
+                    <div id="messagesLoadingBox" class="p-12 text-center text-sm text-stone-500">
+                        <i class="fa-solid fa-spinner fa-spin text-2xl text-gold mb-3 block"></i>
+                        Loading messages...
+                    </div>
 
-                <div id="listWrapper" class="hidden divide-y divide-stone-200"></div>
+                    <div id="messagesListWrapper" class="hidden divide-y divide-stone-200"></div>
+                </div>
             </div>
 
         </div>
@@ -183,7 +213,10 @@
         const ADMIN_PASS = "BDP@2026";
 
         let allApplications = [];
+        let allMessages = [];
         let selectedApplicant = null;
+        let currentTab = "applications";
+        let messagesLoaded = false;
 
         function loginAdmin(e) {
             e.preventDefault();
@@ -213,6 +246,85 @@
 
         if (sessionStorage.getItem("bdp_admin_auth") === "true") {
             showDashboard();
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            const appBtn = document.getElementById("tabApplicationsBtn");
+            const msgBtn = document.getElementById("tabMessagesBtn");
+            const appContent = document.getElementById("applicationsTabContent");
+            const msgContent = document.getElementById("messagesTabContent");
+
+            if (tabName === "applications") {
+                appBtn.className = "px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-charcoal text-editorial shadow-sm transition";
+                msgBtn.className = "px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50 transition";
+                appContent.classList.remove("hidden");
+                msgContent.classList.add("hidden");
+            } else {
+                msgBtn.className = "px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-charcoal text-editorial shadow-sm transition";
+                appBtn.className = "px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50 transition";
+                msgContent.classList.remove("hidden");
+                appContent.classList.add("hidden");
+                if (!messagesLoaded) {
+                    loadMessages();
+                }
+            }
+        }
+
+        function refreshActiveTab() {
+            if (currentTab === "messages") {
+                loadMessages();
+            } else {
+                loadApplications();
+            }
+        }
+
+        async function loadMessages() {
+            const loadingBox = document.getElementById("messagesLoadingBox");
+            const listWrapper = document.getElementById("messagesListWrapper");
+            const icon = document.getElementById("refreshIcon");
+
+            loadingBox.classList.remove("hidden");
+            listWrapper.classList.add("hidden");
+            icon.classList.add("fa-spin");
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getMessages`);
+                const data = await res.json();
+                allMessages = Array.isArray(data) ? data.reverse() : [];
+                messagesLoaded = true;
+                document.getElementById("messagesBadgeCount").textContent = `${allMessages.length} Messages`;
+                renderMessages();
+                loadingBox.classList.add("hidden");
+                listWrapper.classList.remove("hidden");
+            } catch (error) {
+                loadingBox.innerHTML = `<span class="text-red-600 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Failed to load messages. Check Google Apps Script deployment.</span>`;
+                console.error(error);
+            } finally {
+                icon.classList.remove("fa-spin");
+            }
+        }
+
+        function renderMessages() {
+            const listWrapper = document.getElementById("messagesListWrapper");
+            if (!allMessages.length) {
+                listWrapper.innerHTML = `<div class="p-10 text-center text-sm text-stone-500">No messages received yet.</div>`;
+                return;
+            }
+
+            listWrapper.innerHTML = allMessages.map(msg => `
+                <div class="p-5 sm:px-6 hover:bg-editorial/70 transition space-y-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-bold text-charcoal text-sm">${msg.name || "Anonymous"}</span>
+                            <span class="text-xs text-stone-500">(${msg.contact || "-"})</span>
+                            <span class="text-[11px] font-semibold bg-gold/15 text-charcoal px-2.5 py-0.5 rounded-full border border-gold/30">${msg.subject || "General"}</span>
+                        </div>
+                        <span class="text-[11px] text-stone-400">${msg.date || ""}</span>
+                    </div>
+                    <p class="text-sm text-stone-700 leading-relaxed bg-editorial p-3.5 rounded-xl border border-stone-200/80">${msg.message || ""}</p>
+                </div>
+            `).join("");
         }
 
         async function loadApplications() {
@@ -251,8 +363,7 @@
             document.getElementById("approvedCount").textContent = approved;
             document.getElementById("rejectedCount").textContent = rejected;
         }
-
-        function getStatusBadge(status) {
+                function getStatusBadge(status) {
             const st = status || "Waiting";
             if (st.toLowerCase() === "approved") {
                 return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700"><i class="fa-solid fa-circle-check"></i> Approved</span>`;
