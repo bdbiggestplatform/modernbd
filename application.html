@@ -155,8 +155,8 @@
                             <option value="Social Media Management">Social Media Management</option>
                             <option value="HR Department">HR Department</option>
                         </select>
-                    </div>
-                                        <!-- 7. Contact Information -->
+                </div>
+                                            <!-- 7. Contact Information -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">7. Contact Information *</label>
                         <select id="contactTypeSelect" name="contact_type" required onchange="updateContactPlaceholder()" class="w-full px-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
@@ -225,6 +225,37 @@
                 </form>
             </div>
 
+            <!-- Success Box with Auto-Generated Tracking ID -->
+            <div id="successBox" class="hidden border-t border-stone-200 pt-8 mt-6 text-center">
+                <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-5 text-3xl shadow-sm">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-charcoal mb-2">Application Successful!</h2>
+                <p class="text-xs sm:text-sm text-stone-600 max-w-md mx-auto mb-6 leading-relaxed">
+                    Thank you! Your application has been submitted successfully. Please save your personal Application ID Number below to check your status later:
+                </p>
+
+                <div class="bg-editorial border border-stone-300 rounded-2xl p-5 max-w-sm mx-auto mb-6 shadow-inner">
+                    <span class="block text-[11px] font-semibold uppercase tracking-widest text-stone-500 mb-1">Your Application ID Number</span>
+                    <div class="flex items-center justify-center gap-3">
+                        <span id="generatedId" class="font-mono font-bold text-charcoal text-xl sm:text-2xl tracking-wider">BDP-2026-0000</span>
+                        <button type="button" onclick="copyTrackingId()" title="Copy ID" class="p-2 text-stone-500 hover:text-charcoal bg-white border border-stone-200 rounded-lg transition">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <span id="copyNotice" class="block text-[11px] text-emerald-600 font-medium mt-1.5 hidden">Copied to clipboard!</span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-3 max-w-md mx-auto">
+                    <a href="index.html#application" class="flex-1 py-3.5 px-5 bg-charcoal text-editorial text-xs sm:text-sm font-semibold rounded-xl hover:bg-stone-800 transition shadow-md">
+                        Track Application Status
+                    </a>
+                    <a href="index.html" class="py-3.5 px-6 bg-stone-100 text-stone-700 text-xs sm:text-sm font-semibold rounded-xl hover:bg-stone-200 transition">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -235,7 +266,7 @@
         </div>
     </footer>
 
-    <!-- Script Handling Consent, Conditional Fields & Google Script Submission -->
+    <!-- Script Handling Consent, Conditional Fields, Auto ID & Google Script Submission -->
     <script>
     function acceptConsent() {
         document.getElementById("consentBox").classList.add("hidden");
@@ -255,7 +286,6 @@
         const instituteInput = document.getElementById("instituteNameInput");
         const semesterInput = document.getElementById("semesterYearInput");
 
-        // Reset visibility and required states
         underSscBox.classList.add("hidden");
         semesterBox.classList.add("hidden");
 
@@ -294,6 +324,15 @@
         }
     }
 
+    function copyTrackingId() {
+        const idText = document.getElementById("generatedId").innerText;
+        navigator.clipboard.writeText(idText).then(() => {
+            const notice = document.getElementById("copyNotice");
+            notice.classList.remove("hidden");
+            setTimeout(() => notice.classList.add("hidden"), 2500);
+        });
+    }
+
     document.addEventListener("submit", async function(event) {
         if (event.target.id !== "directApplicationForm") return;
 
@@ -304,6 +343,10 @@
 
         button.disabled = true;
         button.textContent = "Submitting application...";
+
+        // Auto-generate unique Application ID
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        const trackingId = "BDP-2026-" + randomNum;
 
         const pictureFile = form.picture.files[0];
         const cvFile = form.cv.files[0];
@@ -325,6 +368,7 @@
         const agreeTermsValue = form.querySelector('input[name="agree_terms"]:checked')?.value || "";
 
         const data = {
+            trackingId: trackingId,
             fullName: form.full_name.value,
             address: form.address.value,
             dateOfBirth: form.date_of_birth.value,
@@ -355,7 +399,12 @@
                 }
             );
 
-            alert("Application submitted successfully!");
+            // Show Success Box with Auto-Generated ID
+            document.getElementById("generatedId").innerText = trackingId;
+            document.getElementById("formWrapper").classList.add("hidden");
+            document.getElementById("successBox").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
             form.reset();
             handleEducationChange();
 
