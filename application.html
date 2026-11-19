@@ -387,9 +387,9 @@
             agreeTerms: agreeTermsValue
         };
 
-        try {
+                try {
             await fetch(
-                "https://script.google.com/macros/s/AKfycbxVmW-0fb3_WFAj3bCzy9W9PBr4IzhcCdJOcFYaxjnA3YUCO_sD4aLHSrYTScDIJqx5/exec",
+                "https://script.google.com/macros/s/AKfycbx83MnLXkMipP6yLBUpg3vuoQMhyYBKIGL3tTAX47zN4Xm34uu8xxNfra369lQ4vCk1/exec",
                 {
                     method: "POST",
                     headers: {
@@ -398,6 +398,7 @@
                     body: JSON.stringify(data)
                 }
             );
+
 
             // Show Success Box with Auto-Generated ID
             document.getElementById("generatedId").innerText = trackingId;
