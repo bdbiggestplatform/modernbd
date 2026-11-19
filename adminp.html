@@ -167,8 +167,7 @@
 
         </div>
     </main>
-
-    <!-- Full Candidate Details Modal -->
+     <!-- Full Candidate Details Modal -->
     <div id="detailsModal" class="fixed inset-0 z-50 hidden bg-charcoal/75 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-stone-200 shadow-2xl p-6 sm:p-8">
             <div class="flex items-start justify-between border-b border-stone-200 pb-4 mb-5 gap-4">
@@ -201,7 +200,8 @@
             </div>
         </div>
     </div>
-        <!-- Footer -->
+
+    <!-- Footer -->
     <footer class="bg-charcoal text-stone-400 py-6 px-4 text-center text-xs border-t border-stone-800">
         <div class="max-w-7xl mx-auto">
             <p>&copy; 2026 BDPlatform Admin Console. All rights reserved.</p>
@@ -209,7 +209,7 @@
     </footer>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVmW-0fb3_WFAj3bCzy9W9PBr4IzhcCdJOcFYaxjnA3YUCO_sD4aLHSrYTScDIJqx5/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby6djkvKacDBiQtZ5CYS9LtQMKz0a7zqYSi6U-q-MOatsCrunF-U_U0RM6tva3ZpcALIg/exec";
         const ADMIN_PASS = "BDP@2026";
 
         let allApplications = [];
@@ -363,7 +363,8 @@
             document.getElementById("approvedCount").textContent = approved;
             document.getElementById("rejectedCount").textContent = rejected;
         }
-                function getStatusBadge(status) {
+
+        function getStatusBadge(status) {
             const st = status || "Waiting";
             if (st.toLowerCase() === "approved") {
                 return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700"><i class="fa-solid fa-circle-check"></i> Approved</span>`;
@@ -373,7 +374,6 @@
             }
             return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800"><i class="fa-solid fa-clock"></i> Waiting</span>`;
         }
-
         function renderList() {
             const query = document.getElementById("searchInput").value.trim().toLowerCase();
             const statusFilter = document.getElementById("statusFilter").value;
@@ -542,7 +542,7 @@
             const id = selectedApplicant.trackingId;
 
             try {
-                await fetch(SCRIPT_URL, {
+                const res = await fetch(SCRIPT_URL, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({
@@ -551,6 +551,10 @@
                         status: newStatus
                     })
                 });
+                const result = await res.json();
+                if (!result || result.success !== true) {
+                    throw new Error(result?.error || "Status update failed");
+                }
 
                 selectedApplicant.status = newStatus;
                 updateStats();
@@ -558,7 +562,7 @@
                 closeModal();
                 alert(`Status for ${id} updated to ${newStatus}!`);
             } catch (error) {
-                alert("Failed to update status. Please try again.");
+                alert("Failed to update status: " + (error.message || "Please try again."));
                 console.error(error);
             }
         }
