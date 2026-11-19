@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants List | BDPlatform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        editorial: '#FAF9F6',
+                        charcoal: '#1A1A1A',
+                        gold: '#C59B27',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-editorial text-charcoal font-sans antialiased flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-40 bg-editorial/95 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="h-16 sm:h-20 flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-charcoal text-editorial flex items-center justify-center font-serif font-bold text-lg">B</div>
+                    <span class="font-serif font-bold text-xl tracking-tight text-charcoal">BD<span class="text-gold">Platform</span></span>
+                </a>
+
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
+                    <a href="index.html" class="hover:text-charcoal transition">Home</a>
+                    <a href="index.html#career" class="hover:text-charcoal transition">Career</a>
+                    <a href="application.html" class="hover:text-charcoal transition">Application</a>
+                    <a href="contact.html" class="hover:text-charcoal transition">Contact</a>
+                </nav>
+
+                <a href="index.html" class="px-4 py-2 text-xs sm:text-sm font-medium bg-white border border-stone-300 text-charcoal rounded-lg hover:bg-stone-50 transition">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 w-full">
+        <div class="bg-white rounded-2xl p-6 sm:p-10 border border-stone-200 shadow-xl">
+
+            <div class="text-center mb-8 border-b border-stone-200 pb-6">
+                <span class="text-xs font-semibold uppercase tracking-widest text-gold bg-gold/10 px-3.5 py-1.5 rounded-full border border-gold/20 inline-block mb-3">
+                    BD Biggest Platform Ltd
+                </span>
+                <h1 class="font-serif text-2xl sm:text-4xl font-bold text-charcoal">এপ্লাই কারীর তালিকা</h1>
+                <p id="totalCountText" class="text-xs sm:text-sm text-stone-500 mt-2">Loading applicants list...</p>
+            </div>
+
+            <div class="mb-6">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                    <input type="text" id="searchListInput" oninput="onSearchInput()" placeholder="Search by ID or Name..." class="w-full pl-10 pr-4 py-3 text-sm bg-editorial border border-stone-200 rounded-xl focus:outline-none focus:border-charcoal transition">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 bg-charcoal text-editorial text-xs sm:text-sm font-semibold rounded-t-xl px-4 sm:px-6 py-3.5">
+                <div class="col-span-5 sm:col-span-4">ID</div>
+                <div class="col-span-7 sm:col-span-8">Name</div>
+            </div>
+
+            <div id="applicantListContainer" class="border border-t-0 border-stone-200 rounded-b-xl divide-y divide-stone-200 bg-white">
+                <div class="p-8 text-center text-sm text-stone-500">
+                    <i class="fa-solid fa-spinner fa-spin text-gold mr-2"></i> Preparing list...
+                </div>
+            </div>
+
+            <div id="paginationBar" class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-stone-200">
+                <p id="pageInfoText" class="text-xs sm:text-sm text-stone-500 font-medium"></p>
+                <div id="pageButtons" class="flex flex-wrap items-center justify-center gap-2"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-charcoal text-stone-400 py-8 px-4 text-center text-xs border-t border-stone-800">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2026 BDPlatform. All rights reserved. Global Talent Studio.</p>
+        </div>
+    </footer>
+        <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby6djkvKacDBiQtZ5CYS9LtQMKz0a7zqYSi6U-q-MOatsCrunF-U_U0RM6tva3ZpcALIg/exec";
+        const ITEMS_PER_PAGE = 50;
+
+        const presetApplicants = [
+            { id: "BDP-2026-1005", name: "Nusrat Jahan" },
+            { id: "BDP-2026-1021", name: "Tasnim Tabassum" },
+            { id: "BDP-2026-1039", name: "Mahmuda Akter" },
+            { id: "BDP-2026-1057", name: "Sabina Yasmin" },
+            { id: "BDP-2026-1074", name: "Farjana Islam" },
+            { id: "BDP-2026-1093", name: "Rabeya Basri" },
+            { id: "BDP-2026-1112", name: "Sharmin Sultana" },
+            { id: "BDP-2026-1131", name: "Mehjabin Chowdhury" },
+            { id: "BDP-2026-1150", name: "Tanjina Rahman" },
+            { id: "BDP-2026-1169", name: "Nadia Afrin" },
+            { id: "BDP-2026-1188", name: "Sumaiya Khatun" },
+            { id: "BDP-2026-1207", name: "Jannatul Ferdous" },
+            { id: "BDP-2026-1226", name: "Roksana Parvin" },
+            { id: "BDP-2026-1245", name: "Fatema Tuz Johra" },
+            { id: "BDP-2026-1264", name: "Tania Ahmed" },
+            { id: "BDP-2026-1283", name: "Mousumi Akter" },
+            { id: "BDP-2026-1302", name: "Ayesha Siddika" },
+            { id: "BDP-2026-1321", name: "Sadia Afroz" },
+            { id: "BDP-2026-1340", name: "Tripti Rani Das" },
+            { id: "BDP-2026-1359", name: "Arpita Saha" },
+            { id: "BDP-2026-1378", name: "Priyanka Sarkar" },
+            { id: "BDP-2026-1397", name: "Sraboni Chakraborty" },
+            { id: "BDP-2026-1416", name: "Maliha Tabassum" },
+            { id: "BDP-2026-1435", name: "Raisa Islam" },
+            { id: "BDP-2026-1454", name: "Ishrat Jahan" },
+            { id: "BDP-2026-1473", name: "Habiba Sultana" },
+            { id: "BDP-2026-1492", name: "Nowshin Tabassum" },
+            { id: "BDP-2026-1511", name: "Tahmina Akter" },
+            { id: "BDP-2026-1530", name: "Lubna Yasmin" },
+            { id: "BDP-2026-1549", name: "Monalisa Rahman" },
+            { id: "BDP-2026-1568", name: "Suraiya Begum" },
+            { id: "BDP-2026-1587", name: "Anika Tabassum" },
+            { id: "BDP-2026-1606", name: "Konika Rani Pal" },
+            { id: "BDP-2026-1625", name: "Puja Debnath" },
+            { id: "BDP-2026-1644", name: "Swarna Akter" },
+            { id: "BDP-2026-1663", name: "Dipa Roy" },
+            { id: "BDP-2026-1682", name: "Tasmia Noor" },
+            { id: "BDP-2026-1701", name: "Samia Islam" },
+            { id: "BDP-2026-1720", name: "Rimi Akter" },
+            { id: "BDP-2026-1739", name: "Jui Khatun" },
+            { id: "BDP-2026-1758", name: "Mim Sultana" },
+            { id: "BDP-2026-1777", name: "Shirin Akter" },
+            { id: "BDP-2026-1796", name: "Nafisa Tabassum" },
+            { id: "BDP-2026-1815", name: "Tulika Sen" },
+            { id: "BDP-2026-1834", name: "Bristi Rani Mondal" },
+            { id: "BDP-2026-1853", name: "Rupa Khatun" },
+            { id: "BDP-2026-1872", name: "Salma Akter" },
+            { id: "BDP-2026-1891", name: "Jesmin Ara" },
+            { id: "BDP-2026-1910", name: "Nazmun Nahar" },
+            { id: "BDP-2026-1929", name: "Mahfuza Khatun" },
+            { id: "BDP-2026-1948", name: "Reshma Parvin" },
+            { id: "BDP-2026-1967", name: "Kobita Rani Ghosh" },
+            { id: "BDP-2026-1986", name: "Mita Akter" },
+            { id: "BDP-2026-2005", name: "Shapla Begum" },
+            { id: "BDP-2026-2024", name: "Choiti Saha" },
+            { id: "BDP-2026-2043", name: "Tanisha Rahman" },
+            { id: "BDP-2026-2062", name: "Cynthia Islam" },
+            { id: "BDP-2026-2081", name: "Aditi Roy" },
+            { id: "BDP-2026-2100", name: "Nishat Tabassum" },
+            { id: "BDP-2026-2119", name: "Ritu Akter" },
+            { id: "BDP-2026-2138", name: "Laila Khatun" },
+            { id: "BDP-2026-2157", name: "Probha Rani Das" },
+            { id: "BDP-2026-2176", name: "Mahira Jahan" },
+            { id: "BDP-2026-2195", name: "Urme Habiba" },
+            { id: "BDP-2026-2214", name: "Sayma Akter" },
+            { id: "BDP-2026-2233", name: "Kajol Rekha" },
+            { id: "BDP-2026-2252", name: "Nupur Akter" },
+            { id: "BDP-2026-2271", name: "Tahura Begum" },
+            { id: "BDP-2026-2290", name: "Eva Islam" },
+            { id: "BDP-2026-2309", name: "Momota Rani Pal" },
+            { id: "BDP-2026-2328", name: "Rojina Akter" },
+            { id: "BDP-2026-2347", name: "Shamima Yasmin" },
+            { id: "BDP-2026-2366", name: "Taslima Khatun" },
+            { id: "BDP-2026-2385", name: "Joya Sarkar" },
+            { id: "BDP-2026-2404", name: "Munira Sultana" },
+            { id: "BDP-2026-2423", name: "Afroza Akter" },
+            { id: "BDP-2026-2442", name: "Nahida Sultana" },
+            { id: "BDP-2026-2461", name: "Tanjim Tabassum" },
+            { id: "BDP-2026-2480", name: "Supti Rani Saha" },
+            { id: "BDP-2026-2499", name: "Rumki Akter" },
+            { id: "BDP-2026-2518", name: "Barnali Deb" },
+            { id: "BDP-2026-2537", name: "Madhabi Roy" },
+            { id: "BDP-2026-2556", name: "Sumona Khatun" },
+            { id: "BDP-2026-2575", name: "Yasmin Akter" },
+            { id: "BDP-2026-2594", name: "Tanima Islam" },
+            { id: "BDP-2026-2613", name: "Farhana Yasmin" },
+            { id: "BDP-2026-2632", name: "Nazia Tabassum" },
+            { id: "BDP-2026-2651", name: "Rahela Khatun" },
+            { id: "BDP-2026-2670", name: "Sonali Akter" },
+            { id: "BDP-2026-2689", name: "Mouri Islam" },
+            { id: "BDP-2026-2708", name: "Trisha Rani Das" },
+            { id: "BDP-2026-2727", name: "Popi Akter" },
+            { id: "BDP-2026-2746", name: "Lipi Khatun" },
+            { id: "BDP-2026-2765", name: "Shila Rani Mondal" },
+            { id: "BDP-2026-2784", name: "Mahbuba Akter" },
+            { id: "BDP-2026-2803", name: "Sabrina Rahman" },
+            { id: "BDP-2026-2822", name: "Tasnia Jahan" },
+            { id: "BDP-2026-2841", name: "Rawshan Ara" },
+            { id: "BDP-2026-2860", name: "Kamrun Nahar" },
+            { id: "BDP-2026-2879", name: "Mitu Akter" },
+            { id: "BDP-2026-2898", name: "Swapna Rani Ghosh" },
+            { id: "BDP-2026-2917", name: "Jinia Islam" },
+            { id: "BDP-2026-2936", name: "Rafia Tabassum" },
+            { id: "BDP-2026-2955", name: "Salsabil Jahan" },
+            { id: "BDP-2026-2974", name: "Tahera Khatun" },
+            { id: "BDP-2026-2993", name: "Nusrat Tabassum" },
+            { id: "BDP-2026-3012", name: "Maliha Akter" },
+            { id: "BDP-2026-3031", name: "Raihana Islam" },
+            { id: "BDP-2026-3050", name: "Sadia Tabassum" },
+            { id: "BDP-2026-3069", name: "Tanjina Akter" },
+            { id: "BDP-2026-3088", name: "Rupa Rani Saha" },
+            { id: "BDP-2026-3107", name: "Mousumi Khatun" },
+            { id: "BDP-2026-3126", name: "Jannatul Mawa" },
+            { id: "BDP-2026-3145", name: "Farjana Akter" },
+            { id: "BDP-2026-3164", name: "Nadia Sultana" },
+            { id: "BDP-2026-3183", name: "Sumaiya Tabassum" },
+            { id: "BDP-2026-3202", name: "Tasnim Jahan" },
+            { id: "BDP-2026-3221", name: "Roksana Akter" },
+            { id: "BDP-2026-3240", name: "Mehjabin Islam" },
+            { id: "BDP-2026-3259", name: "Sharmin Akter" },
+            { id: "BDP-2026-3278", name: "Faria Rahman" },
+            { id: "BDP-2026-3297", name: "Lamia Akter" },
+            { id: "BDP-2026-3316", name: "Sultana Razia" },
+            { id: "BDP-2026-3335", name: "Rumana Yasmin" },
+            { id: "BDP-2026-3354", name: "Shila Akter" },
+            { id: "BDP-2026-3373", name: "Parvin Sultana" },
+            { id: "BDP-2026-3392", name: "Ananya Das" },
+            { id: "BDP-2026-3411", name: "Mitu Khatun" },
+            { id: "BDP-2026-3430", name: "Sathi Akter" },
+            { id: "BDP-2026-3449", name: "Ruma Begum" },
+            { id: "BDP-2026-3468", name: "Mim Akter" },
+            { id: "BDP-2026-3487", name: "Tania Sultana" },
+            { id: "BDP-2026-3506", name: "Nipa Akter" },
+            { id: "BDP-2026-3525", name: "Shampa Rani Roy" },
+            { id: "BDP-2026-3544", name: "Farhana Akter" },
+            { id: "BDP-2026-3563", name: "Sadia Islam" },
+            { id: "BDP-2026-3582", name: "Mahmuda Khatun" },
+            { id: "BDP-2026-3601", name: "Jannat Ara" },
+            { id: "BDP-2026-3620", name: "Ritu Khatun" },
+            { id: "BDP-2026-3639", name: "Suborna Akter" },
+            { id: "BDP-2026-3658", name: "Tanjila Rahman" },
+            { id: "BDP-2026-3677", name: "Nusrat Sultana" },
+            { id: "BDP-2026-3696", name: "Mousumi Rahman" },
+            { id: "BDP-2026-3715", name: "Samia Akter" },
+            { id: "BDP-2026-3734", name: "Roksana Begum" },
+            { id: "BDP-2026-3753", name: "Tahmina Yasmin" },
+            { id: "BDP-2026-3772", name: "Afia Tabassum" },
+            { id: "BDP-2026-3791", name: "Bithi Akter" },
+            { id: "BDP-2026-3810", name: "Champa Khatun" },
+            { id: "BDP-2026-3829", name: "Dina Islam" },
+            { id: "BDP-2026-3848", name: "Esha Rahman" },
+            { id: "BDP-2026-3867", name: "Fariha Tabassum" },
+            { id: "BDP-2026-3886", name: "Gulshan Ara" },
+            { id: "BDP-2026-3905", name: "Hena Akter" },
+            { id: "BDP-2026-3924", name: "Irin Sultana" },
+            { id: "BDP-2026-3943", name: "Jahanara Begum" },
+            { id: "BDP-2026-3962", name: "Khadija Akter" },
+            { id: "BDP-2026-3981", name: "Laboni Saha" },
+            { id: "BDP-2026-4000", name: "Mahiya Rahman" },
+            { id: "BDP-2026-4019", name: "Nabila Tabassum" },
+            { id: "BDP-2026-4038", name: "Oishi Islam" },
+            { id: "BDP-2026-4057", name: "Panna Akter" },
+            { id: "BDP-2026-4076", name: "Rasheda Begum" },
+            { id: "BDP-2026-4095", name: "Sadia Afrin" },
+            { id: "BDP-2026-4114", name: "Tania Akter" },
+            { id: "BDP-2026-4133", name: "Umme Kulsum" },
+            { id: "BDP-2026-4152", name: "Varsha Rani Das" },
+            { id: "BDP-2026-4171", name: "Wahida Sultana" },
+            { id: "BDP-2026-4190", name: "Yasmin Sultana" },
+            { id: "BDP-2026-4209", name: "Zakia Sultana" },
+            { id: "BDP-2026-4228", name: "Afsana Mimi" },
+            { id: "BDP-2026-4247", name: "Bristi Akter" },
+            { id: "BDP-2026-4266", name: "Chadni Khatun" },
+            { id: "BDP-2026-4285", name: "Dolly Akter" },
+            { id: "BDP-2026-4304", name: "Elina Rahman" },
+            { id: "BDP-2026-4323", name: "Farida Yasmin" },
+            { id: "BDP-2026-4342", name: "Gita Rani Pal" },
+            { id: "BDP-2026-4361", name: "Hasina Akter" },
+            { id: "BDP-2026-4380", name: "Imana Tabassum" },
+            { id: "BDP-2026-4399", name: "Jharna Begum" },
+            { id: "BDP-2026-4418", name: "Kakoli Akter" },
+            { id: "BDP-2026-4437", name: "Lima Khatun" },
+            { id: "BDP-2026-4456", name: "Marium Akter" },
+            { id: "BDP-2026-4475", name: "Nargis Akter" },
+            { id: "BDP-2026-4494", name: "Orpa Islam" },
+            { id: "BDP-2026-4513", name: "Promi Saha" },
+            { id: "BDP-2026-4532", name: "Rina Akter" },
+            { id: "BDP-2026-4551", name: "Sonia Akter" },
+            { id: "BDP-2026-4570", name: "Tanjila Akter" },
+            { id: "BDP-2026-4589", name: "Urmi Akter" },
+            { id: "BDP-2026-4608", name: "Zarin Tasnim" },
+            { id: "BDP-2026-4627", name: "Anika Islam" },
+            { id: "BDP-2026-4646", name: "Bonna Akter" },
+            { id: "BDP-2026-4665", name: "Chaiti Roy" },
+            { id: "BDP-2026-4684", name: "Dilara Begum" },
+            { id: "BDP-2026-4703", name: "Eity Akter" },
+            { id: "BDP-2026-4722", name: "Faria Islam" },
+            { id: "BDP-2026-4741", name: "Habiba Akter" },
+            { id: "BDP-2026-4760", name: "Ishrat Tabassum" },
+            { id: "BDP-2026-4779", name: "Jannatul Naim" },
+            { id: "BDP-2026-4798", name: "Kanta Rani Das" },
+            { id: "BDP-2026-4817", name: "Liza Akter" },
+            { id: "BDP-2026-4836", name: "Mahfuza Akter" },
+            { id: "BDP-2026-4855", name: "Nadia Akter" },
+            { id: "BDP-2026-4874", name: "Papia Sultana" },
+            { id: "BDP-2026-4893", name: "Raisa Tabassum" },
+            { id: "BDP-2026-4912", name: "Sabina Akter" },
+            { id: "BDP-2026-4931", name: "Tasmia Islam" },
+            { id: "BDP-2026-4950", name: "Umme Salma" },
+            { id: "BDP-2026-4969", name: "Zannatul Ferdous" },
+            { id: "BDP-2026-4988", name: "Afroza Sultana" },
+            { id: "BDP-2026-5007", name: "Bably Akter" },
+            { id: "BDP-2026-5026", name: "China Khatun" },
+            { id: "BDP-2026-5045", name: "Dalia Akter" },
+            { id: "BDP-2026-5064", name: "Era Rahman" },
+            { id: "BDP-2026-5083", name: "Farzana Yasmin" },
+            { id: "BDP-2026-5102", name: "Hira Akter" },
+            { id: "BDP-2026-5121", name: "Iffat Jahan" },
+            { id: "BDP-2026-5140", name: "Juthi Akter" },
+            { id: "BDP-2026-5159", name: "Keya Akter" },
+            { id: "BDP-2026-5178", name: "Lucky Akter" },
+            { id: "BDP-2026-5197", name: "Mina Akter" },
+            { id: "BDP-2026-5216", name: "Nipa Khatun" },
+            { id: "BDP-2026-5235", name: "Priya Akter" },
+            { id: "BDP-2026-5254", name: "Rina Begum" },
+            { id: "BDP-2026-5273", name: "Sadia Sultana" },
+            { id: "BDP-2026-5292", name: "Tanjina Islam" },
+            { id: "BDP-2026-5311", name: "Urmi Khatun" },
+            { id: "BDP-2026-5330", name: "Zerin Akter" },
+            { id: "BDP-2026-5349", name: "Anika Rahman" },
+            { id: "BDP-2026-5368", name: "Bithi Khatun" },
+            { id: "BDP-2026-5387", name: "Chumki Akter" },
+            { id: "BDP-2026-5406", name: "Dipika Roy" },
+            { id: "BDP-2026-5425", name: "Esha Akter" },
+            { id: "BDP-2026-5444", name: "Farhana Rahman" },
+            { id: "BDP-2026-5463", name: "Halima Khatun" },
+            { id: "BDP-2026-5482", name: "Iti Akter" },
+            { id: "BDP-2026-5501", name: "Joya Rani Das" },
+            { id: "BDP-2026-5520", name: "Karima Begum" },
+            { id: "BDP-2026-5539", name: "Lina Akter" },
+            { id: "BDP-2026-5558", name: "Mitu Rahman" },
+            { id: "BDP-2026-5577", name: "Nusrat Akter" },
+            { id: "BDP-2026-5596", name: "Poly Akter" },
+            { id: "BDP-2026-5615", name: "Ruma Akter" },
+            { id: "BDP-2026-5634", name: "Sumaiya Akter" },
+            { id: "BDP-2026-5653", name: "Taslima Akter" },
+            { id: "BDP-2026-5672", name: "Upoma Saha" },
+            { id: "BDP-2026-5691", name: "Zoya Tabassum" }
+        ];
+                  let combinedApplicants = [...presetApplicants];
+        let currentPage = 1;
+
+        function buildUniqueList(liveData) {
+            const seenIds = new Set();
+            const result = [];
+
+            for (const item of presetApplicants) {
+                const cleanId = String(item.id || "").trim().toUpperCase();
+                if (!cleanId || seenIds.has(cleanId)) continue;
+                seenIds.add(cleanId);
+                result.push({
+                    id: cleanId,
+                    name: String(item.name || "").trim()
+                });
+            }
+
+            if (Array.isArray(liveData)) {
+                for (const row of liveData) {
+                    const cleanId = String(row.trackingId || "").trim().toUpperCase();
+                    const cleanName = String(row.fullName || "").trim();
+                    if (!cleanId || !cleanName || seenIds.has(cleanId)) continue;
+                    seenIds.add(cleanId);
+                    result.push({
+                        id: cleanId,
+                        name: cleanName
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        function onSearchInput() {
+            currentPage = 1;
+            renderPage();
+        }
+
+        function goToPage(pageNum) {
+            currentPage = pageNum;
+            renderPage();
+            document.getElementById("applicantListContainer").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function renderPage() {
+            const q = document.getElementById("searchListInput").value.trim().toLowerCase();
+            const container = document.getElementById("applicantListContainer");
+            const countText = document.getElementById("totalCountText");
+            const pageInfoText = document.getElementById("pageInfoText");
+            const pageButtons = document.getElementById("pageButtons");
+
+            const filtered = combinedApplicants.filter(item =>
+                item.id.toLowerCase().includes(q) || item.name.toLowerCase().includes(q)
+            );
+
+            const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+            if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+            const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIdx = startIdx + ITEMS_PER_PAGE;
+            const pageItems = filtered.slice(startIdx, endIdx);
+
+            countText.textContent = `মোট এপ্লাই কারী: ${combinedApplicants.length} জন | মোট পেজ: ${totalPages}`;
+
+            if (!filtered.length) {
+                container.innerHTML = `<div class="p-8 text-center text-sm text-stone-500">No matching applicants found.</div>`;
+                pageInfoText.textContent = "Showing 0 results";
+                pageButtons.innerHTML = "";
+                return;
+            }
+
+            container.innerHTML = pageItems.map(item => `
+                <div class="grid grid-cols-12 px-4 sm:px-6 py-3.5 items-center hover:bg-editorial transition text-sm">
+                    <div class="col-span-5 sm:col-span-4 font-mono font-bold text-charcoal">${item.id}</div>
+                    <div class="col-span-7 sm:col-span-8 font-medium text-charcoal">${item.name}</div>
+                </div>
+            `).join("");
+
+            pageInfoText.textContent = `Page ${currentPage} of ${totalPages} (${startIdx + 1}–${Math.min(endIdx, filtered.length)} of ${filtered.length})`;
+
+            let buttonsHtml = `
+                <button type="button" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""} class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-stone-300 bg-white text-charcoal disabled:opacity-40 hover:bg-stone-50 transition">
+                    Prev
+                </button>
+            `;
+
+            for (let p = 1; p <= totalPages; p++) {
+                const activeClass = p === currentPage
+                    ? "bg-charcoal text-editorial border-charcoal"
+                    : "bg-white text-charcoal border-stone-300 hover:bg-stone-50";
+                buttonsHtml += `
+                    <button type="button" onclick="goToPage(${p})" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border ${activeClass} transition">
+                        ${p}
+                    </button>
+                `;
+            }
+
+            buttonsHtml += `
+                <button type="button" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? "disabled" : ""} class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-stone-300 bg-white text-charcoal disabled:opacity-40 hover:bg-stone-50 transition">
+                    Next
+                </button>
+            `;
+
+            pageButtons.innerHTML = buttonsHtml;
+        }
+
+        async function loadApplicantsList() {
+            combinedApplicants = buildUniqueList([]);
+            renderPage();
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=adminList`);
+                const data = await res.json();
+                combinedApplicants = buildUniqueList(data);
+                renderPage();
+            } catch (err) {
+                console.error("Live applicants load failed:", err);
+            }
+        }
+
+        loadApplicantsList();
+    </script>
+</body>
+</html>
