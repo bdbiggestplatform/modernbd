@@ -271,21 +271,74 @@
 
         </div>
     </footer>
+    
 
-    <!-- Interactive Script for Status Checking -->
-    <script>
-        function checkStatus() {
-            const val = document.getElementById('trackInput').value.trim();
-            const res = document.getElementById('trackResult');
-            res.classList.remove('hidden');
-            if(!val) {
-                res.className = 'mt-4 text-sm font-medium text-red-400';
-                res.innerText = 'অনুগ্রহ করে একটি সঠিক Tracking ID দিন।';
-            } else {
-                res.className = 'mt-4 text-sm font-medium text-emerald-400';
-                res.innerText = 'Status for ' + val + ': Under Editorial Review (আপনার আবেদনটি যাচাই করা হচ্ছে)।';
-            }
+    <!-- Interactive Script for Live Status Checking -->
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVmW-0fb3_WFAj3bCzy9W9PBr4IzhcCdJOcFYaxjnA3YUCO_sD4aLHSrYTScDIJqx5/exec";
+
+    async function checkStatus() {
+        const val = document.getElementById('trackInput').value.trim();
+        const res = document.getElementById('trackResult');
+        res.classList.remove('hidden');
+
+        if (!val) {
+            res.className = 'mt-5 p-4 rounded-xl bg-red-950/50 border border-red-800/60 text-sm text-red-300 text-center max-w-md mx-auto';
+            res.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1.5"></i> Please enter a valid Tracking ID.';
+            return;
         }
-    </script>
+
+        // Loading state
+        res.className = 'mt-5 p-4 rounded-xl bg-stone-800/80 border border-stone-700 text-sm text-stone-300 text-center max-w-md mx-auto';
+        res.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2 text-gold"></i> Checking application status...';
+
+        try {
+            const response = await fetch(`${SCRIPT_URL}?action=track&id=${encodeURIComponent(val)}`);
+            const data = await response.json();
+
+            if (data.found) {
+                let badgeClass = "bg-amber-500/20 text-amber-300 border-amber-500/40";
+                let statusIcon = "fa-clock";
+                const statusText = data.status || "Waiting";
+
+                if (statusText.toLowerCase() === "approved") {
+                    badgeClass = "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+                    statusIcon = "fa-circle-check";
+                } else if (statusText.toLowerCase() === "rejected") {
+                    badgeClass = "bg-red-500/20 text-red-300 border-red-500/40";
+                    statusIcon = "fa-circle-xmark";
+                }
+
+                res.className = 'mt-6 p-5 rounded-2xl bg-stone-900 border border-stone-700/80 shadow-lg max-w-md mx-auto text-left transition-all';
+                res.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-3">
+                        <span class="text-[11px] uppercase tracking-widest text-stone-400 font-semibold">Application Details</span>
+                        <span class="text-xs font-mono text-gold">${val.toUpperCase()}</span>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-stone-400">Applicant Name:</span>
+                            <span class="text-sm font-semibold text-white">${data.name}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-stone-400">Current Status:</span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${badgeClass}">
+                                <i class="fa-solid ${statusIcon}"></i> ${statusText}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                res.className = 'mt-5 p-4 rounded-xl bg-red-950/40 border border-red-800/50 text-sm text-red-300 text-center max-w-md mx-auto';
+                res.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> No application found with ID <strong>${val}</strong>.`;
+            }
+        } catch (error) {
+            res.className = 'mt-5 p-4 rounded-xl bg-red-950/40 border border-red-800/50 text-sm text-red-300 text-center max-w-md mx-auto';
+            res.innerHTML = '<i class="fa-solid fa-wifi mr-1.5"></i> Unable to connect. Please try again later.';
+            console.error(error);
+        }
+    }
+</script>
+
 </body>
 </html>
